@@ -12,15 +12,14 @@
 // Defined in 'AppInfo.php'
 require_once('AppInfo.php');
 
-// Enforce https on production
-if (substr(AppInfo::getUrl(), 0, 8) != 'https://' && $_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
-  header('Location: https://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-  exit();
-}
-
 // This provides access to helper functions defined in 'utils.php'
 require_once('utils.php');
 
+// Enforce https on production
+if (substr(AppInfo::getUrl(), 0, 8) != 'https://' && !isLocalhost()) {
+  header('Location: https://'. $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+  exit();
+}
 
 /*****************************************************************************
  *
@@ -54,16 +53,8 @@ if ($user_id) {
     }
   }
 
-  // This fetches some things that you like . 'limit=*" only returns * values.
-  // To see the format of the data you are retrieving, use the "Graph API
-  // Explorer" which is at https://developers.facebook.com/tools/explorer/
-  $likes = idx($facebook->api('/me/likes?limit=4'), 'data', array());
-
-  // This fetches 4 of your friends.
-  $friends = idx($facebook->api('/me/friends?limit=4'), 'data', array());
-
-  // And this returns 16 of your photos.
-  $photos = idx($facebook->api('/me/photos?limit=16'), 'data', array());
+  // Fetch friends list.
+  $friends = idx($facebook->api('/me/friends?fields=id,name,bio'), 'data', array());
 
   // Here is an example of a FQL call that fetches all of your friends that are
   // using this app
@@ -106,7 +97,7 @@ $app_name = idx($app_info, 'name', '');
     <meta property="og:description" content="My first app" />
     <meta property="fb:app_id" content="<?php echo AppInfo::appID(); ?>" />
 
-    <script type="text/javascript" src="/javascript/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.7.1.min.js"></script>
 
     <script type="text/javascript">
       function logResponse(response) {
@@ -243,7 +234,7 @@ $app_name = idx($app_info, 'name', '');
       <?php } else { ?>
       <div>
         <h1>Welcome</h1>
-        <div class="fb-login-button" data-scope="user_likes,user_photos"></div>
+        <div class="fb-login-button"></div>
       </div>
       <?php } ?>
     </header>
@@ -273,52 +264,6 @@ $app_name = idx($app_info, 'name', '');
             <a href="https://www.facebook.com/<?php echo he($id); ?>" target="_top">
               <img src="https://graph.facebook.com/<?php echo he($id) ?>/picture?type=square" alt="<?php echo he($name); ?>">
               <?php echo he($name); ?>
-            </a>
-          </li>
-          <?php
-            }
-          ?>
-        </ul>
-      </div>
-
-      <div class="list inline">
-        <h3>Recent photos</h3>
-        <ul class="photos">
-          <?php
-            $i = 0;
-            foreach ($photos as $photo) {
-              // Extract the pieces of info we need from the requests above
-              $id = idx($photo, 'id');
-              $picture = idx($photo, 'picture');
-              $link = idx($photo, 'link');
-
-              $class = ($i++ % 4 === 0) ? 'first-column' : '';
-          ?>
-          <li style="background-image: url(<?php echo he($picture); ?>);" class="<?php echo $class; ?>">
-            <a href="<?php echo he($link); ?>" target="_top"></a>
-          </li>
-          <?php
-            }
-          ?>
-        </ul>
-      </div>
-
-      <div class="list">
-        <h3>Things you like</h3>
-        <ul class="things">
-          <?php
-            foreach ($likes as $like) {
-              // Extract the pieces of info we need from the requests above
-              $id = idx($like, 'id');
-              $item = idx($like, 'name');
-
-              // This display's the object that the user liked as a link to
-              // that object's page.
-          ?>
-          <li>
-            <a href="https://www.facebook.com/<?php echo he($id); ?>" target="_top">
-              <img src="https://graph.facebook.com/<?php echo he($id) ?>/picture?type=square" alt="<?php echo he($item); ?>">
-              <?php echo he($item); ?>
             </a>
           </li>
           <?php

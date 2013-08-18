@@ -10,3 +10,11 @@ function idx(array $array, $key, $default = null) {
 function he($str) {
   return htmlentities($str, ENT_QUOTES, "UTF-8");
 }
+
+function isLocalhost () {
+    if ($_SERVER['REMOTE_ADDR'] === '::1' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1') {
+        return true;
+    } else {
+        return false;
+    }
+}
