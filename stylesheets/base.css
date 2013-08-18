@@ -162,17 +162,15 @@ header .tagline {
 #get-started {
   background: url("../images/get-started-bg.jpg");
   border: 1px solid #353d4f;
-  height: 105px;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, .29);
-  padding: 32px 0 0;
+  padding: 32px 5px;
 }
 
 #get-started p {
   color: #fff;
   font-family: "CorbelRegular";
   font-size: 24px;
-  height: 23px;
   margin-bottom: 24px;
 }
 
