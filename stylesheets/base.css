@@ -177,51 +177,51 @@ header #user-picture {
 }
 /* ------------------------------------------ */
 
-/* =guides/samples spacing
+/* =MainContent/samples spacing
 --------------------------------------------- */
-#guides h1,
+#MainContent h1,
 #samples h1 {
   margin-bottom: 15px;
   text-align: center;
 }
 
-#guides, #samples {
+#MainContent, #samples {
   padding: 20px 5px 20px 10px;
 }
 
-#guides ul { text-align: center; }
-#guides li { display: inline-block; }
-#guides ul li {
+#MainContent ul { text-align: center; }
+#MainContent li { display: inline-block; }
+#MainContent ul li {
   margin-right: 3px;
   width: 172px;
 }
 
-#guides ul li p {
+#MainContent ul li p {
   padding: 0 4px;
 }
 /* ------------------------------------------ */
 
-/* =guides
+/* =MainContent
 --------------------------------------------- */
-#guides {
+#MainContent {
   border-bottom: 1px solid #b3b3b3;
   border-left: 1px solid #b3b3b3;
   border-right: 1px solid #b3b3b3;
 }
 
-#guides ul li {
+#MainContent ul li {
   font-size: 11px;
   list-style: none;
 }
 
-#guides ul li p {
+#MainContent ul li p {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   line-height: 20px;
   text-align: justify;
 }
 
-#guides ul li a.icon {
+#MainContent ul li a.icon {
   background: url("../images/sprites.png") no-repeat;
   display: block;
   font-family: "Helvetica Neue", Arial, sans-serif;
@@ -231,19 +231,19 @@ header #user-picture {
   text-align: center;
 }
 
-#guides ul li a.websites {
+#MainContent ul li a.websites {
   background-position: 35px -87px;
 }
 
-#guides ul li a.mobile-apps {
+#MainContent ul li a.mobile-apps {
   background-position: 35px -231px;
 }
 
-#guides ul li a.apps-on-facebook {
+#MainContent ul li a.apps-on-facebook {
   background-position: 35px -375px;
 }
 
-#guides ul li a.heroku {
+#MainContent ul li a.heroku {
   background-position: 35px -519px;
 }
 /* ------------------------------------------ */
@@ -344,6 +344,62 @@ header #user-picture {
   text-indent: -9999px;
 }
 
+/* ------------------------------------------ */
+
+/* =forms
+--------------------------------------------- */
+#pat-report-form {
+    position: relative;
+}
+legend {
+    float: right;
+    border-top: 1px solid;
+    padding: 1em;
+}
+fieldset {
+    margin: 20px 25px 0 0;
+    border: 1px solid;
+    border-width: 0 1px 1px 0;
+}
+label {
+    clear: both;
+    display: block;
+    margin: 2em 0;
+    color: #333;
+    font-weight: bold;
+}
+form .description {
+    display: inline-block;
+    color: #999;
+    font-weight: normal;
+}
+form .description strong {
+    font-weight: bold;
+}
+form .description em {
+    font-style: italic;
+}
+textarea {
+    min-width: 60em;
+    min-height: 10em;
+}
+input[type="submit"] {
+    font-size: xx-large;
+    margin: 20px 0 0 0;
+}
+
+#disambiguate-reportee-container {
+    position: absolute;
+    top: 10em;
+    border: 1px solid gray;
+    padding: 30px;
+    background: #FFF;
+}
+#disambiguate-reportee-container li:hover {
+    background: #CCC;
+    border: 1px solid red;
+    cursor: pointer;
+}
 
 /* ------------------------------------------ */
 

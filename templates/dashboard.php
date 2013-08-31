@@ -16,7 +16,7 @@ if ($results) {
     }
 }
 ?>
-<section id="guides">
+<section id="MainContent">
     <h1>Take action</h1>
     <ul>
 <!--
@@ -26,8 +26,8 @@ if ($results) {
         </li>
 -->
         <li>
-            <a href="report.php?action=lookup" class="icon websites">Lookup reports</a>
-            <p>Search for reports that have already been filed.</p>
+            <a href="reports.php?action=lookup" class="icon websites">Lookup reports</a>
+            <p>Search for reports already filed, or <a href="reports.php?action=lookup&amp;reporter=<?php print he($user_id);?>">view your own</a>.</p>
         </li>
 <!--
         <li>
@@ -39,7 +39,7 @@ if ($results) {
         </li>
 -->
         <li>
-            <a href="report.php?action=new" class="icon apps-on-facebook">File report</a>
+            <a href="reports.php?action=new" class="icon apps-on-facebook">File report</a>
             <p>File a new report to alert others of potential danger.</p>
         </li>
     </ul>
