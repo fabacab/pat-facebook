@@ -9,7 +9,6 @@ body {
   color: #999;
   font: 14px/1.5em "Lucida Grande", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  width: 720px;
   margin: 20px;
 }
 
@@ -48,11 +47,11 @@ header h1 {
   padding: 2px 0 8px;
 }
 
-header #picture + div {
+header #user-picture + div {
   margin-left: 82px;
 }
 
-header #picture {
+header #user-picture {
   background-position: center 25%;
   background-repeat: no-repeat;
   background-size: 64px;
@@ -63,13 +62,10 @@ header #picture {
   overflow: hidden;
 }
 
-header .tagline {
-  float: left;
-}
-
 #share-app {
   float: right;
   width: 344px;
+  background: #FFF;
 }
 
 #share-app ul {
@@ -110,6 +106,7 @@ header .tagline {
   font-weight: bold;
   line-height: 20px;
   margin: 0;
+  padding: 0 7px;
   outline: none;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(255, 255, 255, .33);
@@ -117,19 +114,19 @@ header .tagline {
 
 .facebook-button span {
   background: url("../images/sprites.png") no-repeat;
-  padding: 0 7px 0 21px;
+  padding-left: 14px;
 }
 
 .facebook-button .speech-bubble {
-  background-position: 6px 3px;
+  background-position: 0 3px;
 }
 
 .facebook-button .plus {
-  background-position: 6px -17px;
+  background-position: 0 -17px;
 }
 
 .facebook-button .apprequests {
-  background-position: 6px -37px;
+  background-position: 0 -37px;
 }
 
 .button:link, .button:visited {
@@ -192,15 +189,14 @@ header .tagline {
   padding: 20px 5px 20px 10px;
 }
 
-#guides ul li,
-#samples .list {
-  float: left;
+#guides ul { text-align: center; }
+#guides li { display: inline-block; }
+#guides ul li {
   margin-right: 3px;
   width: 172px;
 }
 
-#guides ul li p,
-#samples ul {
+#guides ul li p {
   padding: 0 4px;
 }
 /* ------------------------------------------ */
@@ -262,13 +258,24 @@ header .tagline {
   border-top: 1px solid #fff;
 }
 
+#samples h1 + .list {
+    width: 48%;
+    float: left;
+}
+#samples .list:last-child {
+    margin-left: 50%;
+}
+
 #samples h3 {
-  background: url("../images/header-sketch.png") no-repeat;
+  background: url("../images/header-sketch.png") no-repeat center;
   color: #646464;
   font-weight: bold;
   font-size: 11px;
   line-height: 29px;
   text-align: center;
+}
+#samples p {
+    text-align: center;
 }
 
 #samples ul {
