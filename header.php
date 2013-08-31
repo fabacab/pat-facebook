@@ -17,7 +17,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="facebook-button apprequests" id="sendRequest" data-message="Test this awesome app">
+                    <a href="#" class="facebook-button apprequests" id="sendRequest" data-message="This app fights rape culture by creating networks of support for survivors, by survivors! Please try it out and spread the word!">
                         <span class="apprequests">Send Requests</span>
                     </a>
                 </li>
