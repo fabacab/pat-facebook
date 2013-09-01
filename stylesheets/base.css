@@ -348,6 +348,14 @@ header #user-picture {
 
 /* =forms
 --------------------------------------------- */
+form strong,
+label {
+    color: #333;
+    font-weight: bold;
+}
+form em {
+    font-style: italic;
+}
 #pat-report-form {
     position: relative;
 }
@@ -365,19 +373,11 @@ label {
     clear: both;
     display: block;
     margin: 2em 0;
-    color: #333;
-    font-weight: bold;
 }
-form .description {
+label .description {
     display: inline-block;
     color: #999;
     font-weight: normal;
-}
-form .description strong {
-    font-weight: bold;
-}
-form .description em {
-    font-style: italic;
 }
 textarea {
     min-width: 60em;
@@ -395,9 +395,13 @@ input[type="submit"] {
     padding: 30px;
     background: #FFF;
 }
-#disambiguate-reportee-container li:hover {
+#disambiguate-reportee li {
+    padding: 1px;
+}
+#disambiguate-reportee li:hover {
     background: #CCC;
     border: 1px solid red;
+    padding: 0;
     cursor: pointer;
 }
 

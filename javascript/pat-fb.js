@@ -67,7 +67,7 @@
               );
           } else {
               FB.api(
-                  '/search?type=user&fields=id,name,picture.type(square),gender,bio,link&q=' + encodeURIComponent(this.value),
+                  '/search?type=user&fields=id,name,picture.type(square),gender,bio,birthday,link&q=' + encodeURIComponent(this.value),
                   PAT_Facebook.UI.handleReporteeSearch
               );
           }
@@ -107,16 +107,23 @@ PAT_Facebook.UI.handleReporteeSearch = function (response) {
             var pic  = response.data[i].picture.data.url;
             var sex  = response.data[i].gender;
             var bio  = response.data[i].bio;
+            var bday = response.data[i].birthday;
             var link = response.data[i].link;
             li.setAttribute('data-fbid', fbid);
             var html = '<a href="' + link + '" target="_blank">';
             html += '<img alt="' + name + ' (' + sex + ')' + '" src="' + pic + '" />';
-            html += (bio) ? bio : name + ' (' + sex + ')';
+            html += name + ' (' + sex + ')';
+            html += (bday) ? ' [Birthday: ' + bday + ']': '';
+            html += (bio) ? '<br />' + bio : '';
             html += '</a>';
             li.innerHTML = html;
             $(li).click(function() {
                 $('#reportee_id').attr('value', fbid);
                 $('#reportee_name').attr('value', name);
+                $('#reportee_picture').attr({
+                    'src': pic,
+                    'style': ''
+                });
                 $('#disambiguate-reportee-container').remove();
             });
             list.appendChild(li);
