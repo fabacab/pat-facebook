@@ -33,7 +33,10 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
         'contactable' => $_REQUEST['communication_preference']
     ));
     if ($report->fieldsValidate()) {
-        $report->save();
+        if ($result = $report->save()) {
+            header('Location: ' . AppInfo::getUrl($_SERVER['PHP_SELF'] . "?action=lookup&id={$result->id}"));
+            exit();
+        }
     }
 }
 ?>
@@ -80,7 +83,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             <label>
                 What happened?
                 <span class="description">In your own words, describe what happened. The more detailed your report is, the better. If you can, please include the names of venues and witnesses, the time of day, locations, and any other details you can remember.</span>
-                <?php if ($report->getValidationErrors('report_text')) : ?>
+                <?php if ($report && $report->getValidationErrors('report_text')) : ?>
                 <ul class="errors">
                 <?php foreach ($report->getValidationErrors('report_text') as $error_message) : ?>
                     <li><?php print he($error_message);?></li>

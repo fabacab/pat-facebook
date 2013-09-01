@@ -1,6 +1,7 @@
 <?php
 require_once 'lib/pat-fb-init.php';
 
+ob_start(); // Sometimes we put headers in bad places. :P
 include 'templates/header.php';
 switch ($_GET['action']) {
     case 'new':
@@ -12,3 +13,4 @@ switch ($_GET['action']) {
         break;
 }
 include 'templates/footer.php';
+ob_end_flush();
