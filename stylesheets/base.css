@@ -405,6 +405,12 @@ input[type="submit"] {
     cursor: pointer;
 }
 
+.errors li {
+    color: red;
+    float: right;
+    text-align: left;
+}
+
 /* ------------------------------------------ */
 
 /* =clearfix

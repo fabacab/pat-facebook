@@ -42,3 +42,6 @@ if ($user_id) {
 // Fetch the basic info of the app that they are using
 $app_info = $FB->api('/'. AppInfo::appID());
 $app_name = idx($app_info, 'name');
+
+// Load our own libraries.
+include 'pat-fb/PATIncident.class.php';

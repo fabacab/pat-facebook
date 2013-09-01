@@ -1,7 +1,15 @@
 <?php
 $reportee_id = ($_REQUEST['reportee_id']) ? $_REQUEST['reportee_id'] : '';
 if (is_numeric($reportee_id)) {
-    $reportee_data = $FB->api("/$reportee_id");
+    try {
+        $reportee_data = $FB->api("/$reportee_id");
+    } catch (Exception $e) {
+        // TODO: Figure out why I can't seem to catch this error if the $reportee_id
+        //       is a user who the current user has blocked.
+        // If the user we're looking up was blocked, we should get an Exception.
+        // In that case, ask the user to triple-check that this is the correct
+        // user ID number for the user they wish to report.
+    }
 } else if (empty($reportee_id) && !empty($_REQUEST['reportee_name'])) {
     if (is_numeric($_REQUEST['reportee_name'])) {
         $reportee_data = $FB->api("/{$_REQUEST['reportee_name']}");
@@ -15,10 +23,23 @@ if (is_numeric($reportee_id)) {
         }
     }
 }
+
+// We're ready to save?
+if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
+    $report = new PATIncident(array(
+        'reporter_id' => $user_id,
+        'reportee_id' => $_REQUEST['reportee_id'],
+        'report_text' => $_REQUEST['report_text'],
+        'contactable' => $_REQUEST['communication_preference']
+    ));
+    if ($report->fieldsValidate()) {
+        $report->save();
+    }
+}
 ?>
 <section id="MainContent">
     <h1>File a new report</h1>
-    <?php if (!isset($_REQUEST['submit']) || isset($_REQUEST['submit_clarification'])) { ?>
+    <?php if (!isset($_REQUEST['submit']) || isset($_REQUEST['submit_clarification']) || isset($report)) { ?>
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
         <p>Report an incident.</p>
         <fieldset><legend>Report details</legend>
@@ -59,6 +80,13 @@ if (is_numeric($reportee_id)) {
             <label>
                 What happened?
                 <span class="description">In your own words, describe what happened. The more detailed your report is, the better. If you can, please include the names of venues and witnesses, the time of day, locations, and any other details you can remember.</span>
+                <?php if ($report->getValidationErrors('report_text')) : ?>
+                <ul class="errors">
+                <?php foreach ($report->getValidationErrors('report_text') as $error_message) : ?>
+                    <li><?php print he($error_message);?></li>
+                <?php endforeach;?>
+                </ul>
+                <?php endif; ?>
                 <textarea name="report_text" placeholder="Type your report here." required="required"><?php print he($_REQUEST['report_text']);?></textarea>
             </label>
 <!-- TODO: Should we add "when/where" questions, too? -->
@@ -72,7 +100,7 @@ if (is_numeric($reportee_id)) {
             </label>
 -->
             <label>
-                <input type="radio" name="communication_preference" value="do_not_contact"
+                <input type="radio" name="communication_preference" value="approval"
                     <?php if (!isset($_REUQEST['communication_preference']) || $_REQUEST['communication_preference'] === 'do_not_contact') : ?>
                     checked="checked"
                     <?php endif;?>
@@ -80,7 +108,7 @@ if (is_numeric($reportee_id)) {
                 <span class="description">This option (filing pseudonymously) means that <?php print he(idx($app_info, 'name'));?> will associate your report with your identity, but will only reveal your identity to others who ask about it after confirming with you if you are comfortable letting the other person know who wrote this report. (You'll get a notification letting you know someone's interested when that happens so you don't have to keep checking this site.)</span>
             </label>
             <label>
-                <input type="radio" name="communication_preference" value="contact_allowed"
+                <input type="radio" name="communication_preference" value="allowed"
                     <?php if ($_REQUEST['communication_preference'] === 'contact_allowed') : ?>
                     checked="checked"
                     <?php endif;?>
