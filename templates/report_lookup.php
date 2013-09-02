@@ -62,7 +62,7 @@ if (isset($_GET['who'])) {
     <h1>Lookup a report</h1>
     <?php if ($additional_reports) : ?>
     <div class="Alert">
-        <p><strong>There have been additional incidients reported about this individual!</strong></p>
+        <p><strong>There have been additional incidents reported about this individual!</strong></p>
         <ol>
             <?php foreach ($additional_reports as $v) :?>
             <li><a href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?></a>.</li>
