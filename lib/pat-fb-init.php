@@ -45,3 +45,6 @@ $app_name = idx($app_info, 'name');
 
 // Load our own libraries.
 include 'pat-fb/PATIncident.class.php';
+
+// Some global settings.
+date_default_timezone_set('UTC');

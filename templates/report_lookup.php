@@ -2,9 +2,20 @@
 if (is_numeric($_GET['id'])) {
     $report = new PATIncident(array('id' => $_GET['id']));
     if ($report->reportee_id) {
+        // Get information about the reportee.
         $reportee = $FB->api("/{$report->reportee_id}?fields=name,picture.type(square),link");
         if ($reportee['picture']['data']['url']) {
             $reportee['picture'] = $reportee['picture']['data']['url'];
+        }
+        // Automatically search for any other reports against this user ID.
+        $additional_reports = array();
+        $db = new PATFacebookDatabase();
+        $result = pg_query_params($db->connect(psqlConnectionStringFromDatabaseUrl()),
+            'SELECT id, report_date FROM incidents WHERE reportee_id=$1 AND id <> $2 ORDER BY report_date DESC;',
+            array($report->reportee_id, $report->id)
+        );
+        while ($row = pg_fetch_object($result)) {
+            $additional_reports[] = $row;
         }
     }
 }
@@ -49,6 +60,16 @@ if (isset($_GET['who'])) {
 ?>
 <section id="MainContent">
     <h1>Lookup a report</h1>
+    <?php if ($additional_reports) : ?>
+    <div class="Alert">
+        <p><strong>There have been additional incidients reported about this individual!</strong></p>
+        <ol>
+            <?php foreach ($additional_reports as $v) :?>
+            <li><a href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?></a>.</li>
+            <?php endforeach;?>
+        </ol>
+    </div>
+    <?php endif;?>
     <?php if ($report && $reportee) { ?>
     <p>
         <?php if ($report->reporter_id === $user_id) { ?>

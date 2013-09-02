@@ -31,7 +31,7 @@ class PATFacebookDatabase {
             if (!$this->handle = pg_connect($str)) {
                 throw new Exception('Failed to connect to PostgreSQL database: ' . pg_last_error());
             } else {
-                return true;
+                return $this->handle;
             }
         }
     }
