@@ -60,6 +60,7 @@
 
         $('#reportee_name').change(function() {
           $('#disambiguate-reportee-container').remove();
+          $('#reportee_name').after('<span class="fetch-progress">(loading&hellip;)</span>');
           if (isNumeric(this.value)) {
               FB.api(
                   '/' + encodeURIComponent(this.value) + '?fields=id,name,picture.type(square),gender,bio,link',
@@ -83,6 +84,7 @@ PAT_Facebook.UI.handleReporteeSearch = function (response) {
         }
         return false;
     }
+    $('label .fetch-progress').remove();
     // Dynamically create a list of clickable options.
     var el = document.createElement('div');
     el.setAttribute('id', 'disambiguate-reportee-container');
