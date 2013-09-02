@@ -84,9 +84,9 @@ class PATIncident {
      * CREATE TABLE incidents (
      *   id            BIGSERIAL PRIMARY KEY,
      *   reporter_id   BIGINT,
-     *   reportee_id   BIGINT,
-     *   report_text   TEXT,
-     *   contactable   VARCHAR(255),
+     *   reportee_id   BIGINT NOT NULL,
+     *   report_text   TEXT NOT NULL,
+     *   contactable   VARCHAR(255) NOT NULL,
      *   report_date   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
      * );
      */

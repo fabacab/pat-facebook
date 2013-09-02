@@ -346,6 +346,18 @@ header #user-picture {
 
 /* ------------------------------------------ */
 
+/* =Reports and incidents
+--------------------------------------------- */
+#MainContent #report-info {
+    text-align: left;
+}
+#MainContent #report-info li {
+    display: list-item;
+    width: auto;
+}
+
+/* ------------------------------------------ */
+
 /* =forms
 --------------------------------------------- */
 form strong,
