@@ -1,4 +1,6 @@
 <?php
+$db = new PATFacebookDatabase();
+$db->connect(psqlConnectionStringFromDatabaseUrl());
 if (is_numeric($_GET['id'])) {
     $report = new PATIncident(array('id' => $_GET['id']));
     if ($report->reportee_id) {
@@ -9,13 +11,23 @@ if (is_numeric($_GET['id'])) {
         }
         // Automatically search for any other reports against this user ID.
         $additional_reports = array();
-        $db = new PATFacebookDatabase();
-        $result = pg_query_params($db->connect(psqlConnectionStringFromDatabaseUrl()),
+        $result = pg_query_params($db->getHandle(),
             'SELECT id, report_date FROM incidents WHERE reportee_id=$1 AND id <> $2 ORDER BY report_date DESC;',
             array($report->reportee_id, $report->id)
         );
         while ($row = pg_fetch_object($result)) {
             $additional_reports[] = $row;
+        }
+    }
+} else if (isset($_GET['mine'])) {
+    $my_reports = array();
+    $result = pg_query_params($db->getHandle(),
+        'SELECT * FROM incidents WHERE reporter_id=$1 ORDER BY report_date DESC',
+        array($user_id)
+    );
+    if (pg_num_rows($result)) {
+        while ($row = pg_fetch_object($result)) {
+            $my_reports[] = $row;
         }
     }
 }
@@ -70,7 +82,14 @@ if (isset($_GET['who'])) {
         </ol>
     </div>
     <?php endif;?>
-    <?php if ($report && $reportee) { ?>
+    <?php if ($my_reports) { ?>
+    <p>Your reports.</p>
+    <ol>
+        <?php foreach ($my_reports as $v) : ?>
+        <li><a href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?></a>.</li>
+        <?php endforeach;?>
+    </ol>
+    <?php } else if ($report && $reportee) { ?>
     <p>
         <?php if ($report->reporter_id === $user_id) { ?>
         You

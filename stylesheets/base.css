@@ -365,7 +365,7 @@ header #user-picture {
     color: #000;
     font-weight: bold;
 }
-#MainContent .Alert li {
+#MainContent ol li {
     display: list-item;
     list-style-type: decimal;
     margin: 1em 0;

@@ -61,7 +61,7 @@ if (pg_num_rows($result)) {
 -->
         <li>
             <a href="reports.php?action=lookup" class="icon websites">Lookup reports</a>
-            <p>Search for reports already filed, or <a href="reports.php?action=lookup&amp;reporter=<?php print he($user_id);?>">view your own</a>.</p>
+            <p>Search for reports already filed, or <a href="reports.php?action=lookup&amp;mine">view your own</a>.</p>
         </li>
 <!--
         <li>
