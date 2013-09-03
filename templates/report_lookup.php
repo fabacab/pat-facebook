@@ -89,7 +89,7 @@ if (isset($_GET['who'])) {
     </nav>
     <?php if ($reports_found && is_numeric($_GET['id'])) : ?>
     <div class="Alert">
-        <p><strong>There have been additional incidents reported about this individual!</strong></p>
+        <p><strong>There have been additional incidents reported about this individual.</strong></p>
         <?php reportList($reports_found);?>
     </div>
     <?php endif;?>
@@ -104,7 +104,7 @@ if (isset($_GET['who'])) {
         <? } else if (!isset($_GET['who'])) { ?>
         <a href="<?php print he("{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}&who")?>" title="Learn who filed this report.">Someone else</a>
         <?php } else if ($reporter) { ?>
-        <a href="<?php print he($reporter['link']);?>" target="_top"><img alt="" src="<?php print he($reporter['picture']['data']['url']);?>" /> <?php print he($reporter['name']);?></a> filed this report.
+        <a href="<?php print he($reporter['link']);?>" target="_top"><img alt="" src="<?php print he($reporter['picture']['data']['url']);?>" /> <?php print he($reporter['name']);?></a>
         <?php if ($reporter['email']) : ?>(<a href="mailto:<?php print he($reporter['email']);?>">Send <?php print he($reporter['name']);?> an email about this incident</a>.)<?php endif;?>
         <?php } else { ?>
         The person who

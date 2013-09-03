@@ -74,7 +74,7 @@ if (pg_num_rows($result)) {
 -->
         <li>
             <a href="reports.php?action=new" class="icon apps-on-facebook">File report</a>
-            <p>File a new report to alert others of potential danger.</p>
+            <p>File a report about another Facebook user's behavior.</p>
         </li>
     </ul>
 </section>
