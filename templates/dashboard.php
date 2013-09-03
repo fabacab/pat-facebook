@@ -60,8 +60,8 @@ if (pg_num_rows($result)) {
         </li>
 -->
         <li>
-            <a href="reports.php?action=lookup" class="icon websites">Lookup reports</a>
-            <p>Search for reports already filed, or <a href="reports.php?action=lookup&amp;mine">view your own</a>.</p>
+            <a href="reports.php?action=lookup" class="icon websites">Find reports</a>
+            <p>Search for reports, or <a href="reports.php?action=lookup&amp;mine">view reports you filed</a>.</p>
         </li>
 <!--
         <li>

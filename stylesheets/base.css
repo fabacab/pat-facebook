@@ -28,6 +28,13 @@ h1 {
   font-size: 18px;
   font-weight: normal;
 }
+.GlobalNavigation li {
+    display: inline-block;
+}
+.GlobalNavigation .active a {
+    font-weight: normal;
+    color: inherit;
+}
 
 /* ------------------------------------------ */
 
@@ -82,6 +89,22 @@ header #user-picture {
   list-style: none;
   margin-left: 8px;
 }
+
+/* ------------------------------------------ */
+
+/* =footer
+--------------------------------------------- */
+footer .GlobalNavigation {
+    margin: 1em;
+    text-align: center;
+}
+footer .GlobalNavigation li::after {
+    content: " | ";
+}
+footer .GlobalNavigation li:last-child::after {
+    content: "";
+}
+
 /* ------------------------------------------ */
 
 /* =buttons

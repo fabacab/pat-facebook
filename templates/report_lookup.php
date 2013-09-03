@@ -71,7 +71,7 @@ if (isset($_GET['who'])) {
 }
 ?>
 <section id="MainContent">
-    <h1>Lookup a report</h1>
+    <h1>Find a report</h1>
     <?php if ($additional_reports) : ?>
     <div class="Alert">
         <p><strong>There have been additional incidents reported about this individual!</strong></p>
