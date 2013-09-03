@@ -1,29 +1,4 @@
 <?php
-$reportee_id = ($_REQUEST['reportee_id']) ? $_REQUEST['reportee_id'] : '';
-if (is_numeric($reportee_id)) {
-    try {
-        $reportee_data = $FB->api("/$reportee_id");
-    } catch (Exception $e) {
-        // TODO: Figure out why I can't seem to catch this error if the $reportee_id
-        //       is a user who the current user has blocked.
-        // If the user we're looking up was blocked, we should get an Exception.
-        // In that case, ask the user to triple-check that this is the correct
-        // user ID number for the user they wish to report.
-    }
-} else if (empty($reportee_id) && !empty($_REQUEST['reportee_name'])) {
-    if (is_numeric($_REQUEST['reportee_name'])) {
-        $reportee_data = $FB->api("/{$_REQUEST['reportee_name']}");
-    } else {
-        $x = $FB->api(
-            '/search?type=user&q=' . urlencode($_REQUEST['reportee_name']) .
-            '&fields=id,name,picture.type(square),gender,bio,birthday,link'
-        );
-        if ($x['data']) {
-            $search_results = $x['data'];
-        }
-    }
-}
-
 // We're ready to save?
 if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
     $report = new PATIncident(array(
@@ -47,29 +22,11 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
         <p>Report an incident.</p>
         <fieldset><legend>Report details</legend>
             <input type="hidden" id="reporter_id" name="reporter_id" value="<?php print he($user_id);?>" />
-            <input type="hidden" id="reportee_id" name="reportee_id" value="<?php print he($reportee_id);?>" />
-            <label>
-                This report is about
-                <img id="reportee_picture" alt=""
-                    <?php if ($reportee_id) : ?>
-                    src="https://graph.facebook.com/<?php print he($reportee_id);?>/picture"
-                    <?php else : ?>
-                    style="display: none;"
-                    <?php endif;?>
-                />
-                <input list="friends-list" id="reportee_name" name="reportee_name" value="<?php print he($reportee_data['name']);?>"
-                    placeholder="Joe Shmo" required="required"
-                    <?php if ($reportee_data['name']) { print 'size="' . (strlen($reportee_data['name'])) . '"'; } ?>
-                />.
-                <datalist id="friends-list">
-                    <select><!-- For non-HTML5 fallback. -->
-                        <?php foreach ($friends as $friend) : ?>
-                        <option value="<?php print he($friend['name']);?>"><?php print he($friend['id']);?></option>
-                        <?php endforeach;?>
-                    </select>
-                </datalist>
-                <span class="description">If this is not already pre-filled, enter the name of the person you're reporting. We'll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/">Facebook user ID number</a>, you can use that, too.)</span>
-            </label>
+            <?php
+            reporteeNameField(array(
+                'label' => 'This report is about',
+                'description_html' => 'If this is not already pre-filled, enter the name of the person you\'re reporting. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/">Facebook user ID number</a>, you can use that, too.)'
+            ));?>
 <!--
             <label>
                 I feel this violation was
@@ -126,19 +83,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
         <input type="hidden" id="reporter_id" name="reporter_id" value="<?php print he($user_id);?>" />
         <input type="hidden" name="report_text" value="<?php print he($_REQUEST['report_text']);?>" />
         <input type="hidden" name="communication_preference" value="<?php print he($_REQUEST['communication_preference']);?>" />
-        <p><strong>Which "<?php print he($_REQUEST['reportee_name']);?>" did you mean?</strong></p>
-        <p class="description">Please clarify who you're filing this report about. It's important this field is accurate, so double-check just to be sure!</p>
-        <?php if ($search_results) { ?>
-        <ul id="disambiguate-reportee">
-            <?php foreach ($search_results as $result) : ?>
-            <li><label><input type="radio" name="reportee_id" value="<?php print he($result['id']);?>" /> <img alt="" src="<?php print he($result['picture']['data']['url']);?>" /><a href="<?php print he($result['link']);?>" target="_blank"><?php print he($result['name']);?> (<?php print ($result['gender']) ? he($result['gender']): he('unknown');?>)</a></label></li>
-            <?php endforeach;?>
-        </ul>
-        <input type="submit" name="submit_clarification" value="Yes, that's who I mean." />
-        <? } else { ?>
-        <p>Sorry, but <?php print he(idx($app_info, 'name'));?> couldn't find anyone matching that description.</p>
-        <input type="submit" name="no_match_found" value="Go back to search again" />
-        <?php } ?>
+        <?php clarifyReportee($search_results, array('description' => "Please clarify who you're filing this report about. It's important this field is accurate, so double-check just to be sure!"));?>
     </form>
     <?php } ?>
 </section>

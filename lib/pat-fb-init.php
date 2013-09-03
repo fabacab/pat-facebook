@@ -44,7 +44,8 @@ $app_info = $FB->api('/'. AppInfo::appID());
 $app_name = idx($app_info, 'name');
 
 // Load our own libraries.
-include 'pat-fb/PATIncident.class.php';
+require 'pat-fb/PATIncident.class.php';
+require 'pat-fb/template_functions.inc.php';
 
 // Some global settings.
 date_default_timezone_set('UTC');

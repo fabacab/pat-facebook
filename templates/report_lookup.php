@@ -1,6 +1,7 @@
 <?php
 $db = new PATFacebookDatabase();
 $db->connect(psqlConnectionStringFromDatabaseUrl());
+$reports_found = array();
 if (is_numeric($_GET['id'])) {
     $report = new PATIncident(array('id' => $_GET['id']));
     if ($report->reportee_id) {
@@ -10,24 +11,33 @@ if (is_numeric($_GET['id'])) {
             $reportee['picture'] = $reportee['picture']['data']['url'];
         }
         // Automatically search for any other reports against this user ID.
-        $additional_reports = array();
         $result = pg_query_params($db->getHandle(),
             'SELECT id, report_date FROM incidents WHERE reportee_id=$1 AND id <> $2 ORDER BY report_date DESC;',
             array($report->reportee_id, $report->id)
         );
         while ($row = pg_fetch_object($result)) {
-            $additional_reports[] = $row;
+            $reports_found[] = $row;
         }
     }
 } else if (isset($_GET['mine'])) {
-    $my_reports = array();
     $result = pg_query_params($db->getHandle(),
         'SELECT * FROM incidents WHERE reporter_id=$1 ORDER BY report_date DESC',
         array($user_id)
     );
     if (pg_num_rows($result)) {
         while ($row = pg_fetch_object($result)) {
-            $my_reports[] = $row;
+            $reports_found[] = $row;
+        }
+    }
+} else if (is_numeric($_REQUEST['reportee_id'])) {
+    // Search for reports about this person.
+    $result = pg_query_params($db->getHandle(),
+        'SELECT * FROM incidents WHERE reportee_id=$1',
+        array($_REQUEST['reportee_id'])
+    );
+    if (pg_num_rows($result)) {
+        while ($row = pg_fetch_object($result)) {
+            $reports_found[] = $row;
         }
     }
 }
@@ -72,23 +82,21 @@ if (isset($_GET['who'])) {
 ?>
 <section id="MainContent">
     <h1>Find a report</h1>
-    <?php if ($additional_reports) : ?>
+    <nav>
+        <ul class="SectionNavigation">
+            <li<?php if (isset($_GET['mine'])) : ?> class="active"<?php endif;?>><a href="<?php print $_SERVER['PHP_SELF'];?>?action=lookup&amp;mine">View reports I filed</a></li>
+        </ul>
+    </nav>
+    <?php if ($reports_found && is_numeric($_GET['id'])) : ?>
     <div class="Alert">
         <p><strong>There have been additional incidents reported about this individual!</strong></p>
-        <ol>
-            <?php foreach ($additional_reports as $v) :?>
-            <li><a href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?></a>.</li>
-            <?php endforeach;?>
-        </ol>
+        <?php reportList($reports_found);?>
     </div>
     <?php endif;?>
-    <?php if ($my_reports) { ?>
-    <p>Your reports.</p>
-    <ol>
-        <?php foreach ($my_reports as $v) : ?>
-        <li><a href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?></a>.</li>
-        <?php endforeach;?>
-    </ol>
+    <?php if ($reports_found && isset($_GET['mine'])) { ?>
+    <p>Your reports:</p><?php reportList($reports_found);?>
+    <?php } else if ($reports_found && is_numeric($_REQUEST['reportee_id'])) { ?>
+    <p>The following reports have been found:</p><?php reportList($reports_found);?>
     <?php } else if ($report && $reportee) { ?>
     <p>
         <?php if ($report->reporter_id === $user_id) { ?>
@@ -113,7 +121,22 @@ if (isset($_GET['who'])) {
     <?php if ($requester) : ?>
     <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know that you wrote this report. If you feel comfortable doing so, you can <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>">click here to send them a message</a>.</p>
     <?php endif; ?>
+    <?php } else if ($_REQUEST['submit'] && empty($_REQUEST['reportee_id'])) { ?>
+    <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
+        <?php clarifyReportee($search_results, array('description' => "Please clarify who you're trying to find reports about."));?>
+    </form>
     <?php } else { ?>
     <p>No report matching this description could be found. Maybe you want to <a href="<?php print he(AppInfo::getUrl('/reports.php?action=new'));?>">file one</a>?</p>
     <?php } ?>
+    <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
+        <p>Search for a report.</p>
+        <fieldset><legend>Reportee details</legend>
+            <?php
+            reporteeNameField(array(
+                'label' => 'I want to know if there are any reports about',
+                'description_html' => 'Enter the name of the person you\'d like to find reports about. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/">Facebook user ID number</a>, you can use that, too.)'
+            ));?>
+        </fieldset>
+        <input type="submit" name="submit" value="Find reports" />
+    </form>
 </section>

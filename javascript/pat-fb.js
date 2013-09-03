@@ -133,5 +133,5 @@ PAT_Facebook.UI.handleReporteeSearch = function (response) {
     }
     el.innerHTML = '<p>Which "' + document.getElementById('reportee_name').value + '" did you mean?</p>';
     el.appendChild(list);
-    document.getElementById('pat-report-form').appendChild(el);
+    $('#reportee_name').closest('form')[0].appendChild(el);
 };
