@@ -434,6 +434,9 @@ textarea {
     min-width: 60em;
     min-height: 10em;
 }
+input[name="report_title"] {
+    width: 75%;
+}
 input[type="submit"] {
     font-size: xx-large;
     margin: 20px 0 0 0;

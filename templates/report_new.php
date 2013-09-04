@@ -4,6 +4,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
     $report = new PATIncident(array(
         'reporter_id' => $user_id,
         'reportee_id' => $_REQUEST['reportee_id'],
+        'report_title' => $_REQUEST['report_title'],
         'report_text' => $_REQUEST['report_text'],
         'contactable' => $_REQUEST['communication_preference']
     ));
@@ -49,6 +50,18 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                 <?php endif; ?>
                 <textarea name="report_text" placeholder="Type your report here." required="required"><?php print he($_REQUEST['report_text']);?></textarea>
             </label>
+            <label>
+                What's the single most important point about what happened?
+                <span class="description">In as few words as possible, summarize the main take-away from your report. This is used like a "subject" line in email to display a brief headline for your report in the event there is more than one incident to display about a given individual.</span>
+                <?php if ($report && $report->getValidationErrors('report_title')) : ?>
+                <ul class="errors">
+                <?php foreach ($report->getValidationErrors('report_title') as $error_message) : ?>
+                    <li><?php print he($error_message);?></li>
+                <?php endforeach;?>
+                </ul>
+                <?php endif; ?>
+                <input id="report_title" name="report_title" placeholder="Keywords/summary of main point" required="required" value="<?php print he($_REQUEST['report_title']);?>" />
+            </label>
 <!-- TODO: Should we add "when/where" questions, too? -->
         </fieldset>
         <fieldset><legend>Communication preference</legend>
@@ -81,6 +94,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
     <?php } else if (empty($_REQUEST['reportee_id'])) { ?>
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
         <input type="hidden" id="reporter_id" name="reporter_id" value="<?php print he($user_id);?>" />
+        <input type="hidden" name="report_title" value="<?php print he($_REQUEST['report_title']);?>" />
         <input type="hidden" name="report_text" value="<?php print he($_REQUEST['report_text']);?>" />
         <input type="hidden" name="communication_preference" value="<?php print he($_REQUEST['communication_preference']);?>" />
         <?php clarifyReportee($search_results, array('description' => "Please clarify who you're filing this report about. It's important this field is accurate, so double-check just to be sure!"));?>

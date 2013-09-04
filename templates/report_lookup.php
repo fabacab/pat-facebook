@@ -115,6 +115,10 @@ if (isset($_GET['who'])) {
     <ul id="report-info">
         <li>This report is about: <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a></li>
         <li>
+            Report title:
+            <blockquote><p><?php print he($report->report_title);?></p></blockquote>
+        </li>
+        <li>
             Reported incident:
             <blockquote><p><?php print he($report->report_text);?></p></blockquote>
         </li>

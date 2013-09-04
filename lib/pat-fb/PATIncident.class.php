@@ -26,6 +26,9 @@ class PATIncident {
                 case 'reportee_id':
                     $this->validateReporteeId();
                     break;
+                case 'report_title':
+                    $this->validateReportTitle();
+                    break;
                 case 'report_text':
                     $this->validateReportText();
                     break;
@@ -59,6 +62,14 @@ class PATIncident {
         return is_numeric($x);
     }
 
+    private function validateReportTitle () {
+        if (strlen($this->report_title) > 255) {
+            $this->validation_errors['report_title'] = array('Report title must be less than 255 characters long.');
+            return false;
+        }
+        return true;
+    }
+
     private function validateReportText () {
         if (249 > strlen($this->report_text)) {
             $this->validation_errors['report_text'] = array('Report text must be at least 250 characters.');
@@ -85,6 +96,7 @@ class PATIncident {
      *   id            BIGSERIAL PRIMARY KEY,
      *   reporter_id   BIGINT,
      *   reportee_id   BIGINT NOT NULL,
+     *   report_title  VARCHAR(255),
      *   report_text   TEXT NOT NULL,
      *   contactable   VARCHAR(255) NOT NULL,
      *   report_date   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
@@ -94,9 +106,9 @@ class PATIncident {
         if ('postgres' === $this->db->getType()) {
             $result = pg_query_params(
                 $this->db->getHandle(),
-                'INSERT INTO incidents (reporter_id, reportee_id, report_text, contactable)' .
-                ' VALUES ($1, $2, $3, $4) RETURNING id;',
-                array($this->reporter_id, $this->reportee_id, $this->report_text, $this->contactable)
+                'INSERT INTO incidents (reporter_id, reportee_id, report_title, report_text, contactable)' .
+                ' VALUES ($1, $2, $3, $4, $5) RETURNING id;',
+                array($this->reporter_id, $this->reportee_id, $this->report_title, $this->report_text, $this->contactable)
             );
             if (pg_num_rows($result)) {
                 return pg_fetch_object($result);

@@ -69,7 +69,7 @@ function reportList ($reports) {
 ?>
     <ol>
         <?php foreach ($reports as $v) : ?>
-        <li><a href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?></a>.</li>
+        <li><a href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?>: <?php print he($v->report_title);?></a>.</li>
         <?php endforeach;?>
     </ol>
 <?php
