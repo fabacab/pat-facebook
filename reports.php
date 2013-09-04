@@ -26,6 +26,50 @@ if (is_numeric($reportee_id)) {
     }
 }
 
+// Offer a tab separated values download of the user's own reports.
+if ('export' === $_GET['action']) {
+    $db = new PATFacebookDatabase();
+    $db->connect(psqlConnectionStringFromDatabaseUrl());
+    // Learn column placements to strip incident ID, ensure only own reports are exported.
+    $result = pg_query_params($db->getHandle(),
+        'SELECT column_name FROM information_schema.columns WHERE table_name=$1',
+        array('incidents')
+    );
+    $pos_id = 0;
+    $pos_reporter_id = 0;
+    $i = 0;
+    $field_headings = array();
+    while ($row = pg_fetch_object($result)) {
+        $field_headings[] = $row->column_name;
+        switch ($row->column_name) {
+            case 'id':
+                $pos_id = $i;
+                break;
+            case 'reporter_id':
+                $pos_reporter_id = $i;
+                break;
+        }
+        $i++;
+    }
+    array_splice($field_headings, $pos_id, 1);
+    if ($data = pg_copy_to($db->getHandle(), 'incidents', "\t")) {
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="My PAT Facebook reports.tsv"');
+        header('Pragma: no-cache');
+        if (isset($_GET['header'])) {
+            print implode("\t", $field_headings) . "\n";
+        }
+        foreach ($data as $line) {
+            $fields = explode("\t", $line);
+            if ($user_id == $fields[$pos_reporter_id]) {
+                array_splice($fields, $pos_id, 1);
+                print implode("\t", $fields);
+            }
+        }
+    }
+    exit();
+}
+
 ob_start(); // Sometimes we put headers in bad places. :P
 include 'templates/header.php';
 switch ($_GET['action']) {

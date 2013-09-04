@@ -85,6 +85,7 @@ if (isset($_GET['who'])) {
     <nav>
         <ul class="SectionNavigation">
             <li<?php if (isset($_GET['mine'])) : ?> class="active"<?php endif;?>><a href="<?php print $_SERVER['PHP_SELF'];?>?action=lookup&amp;mine">View reports I filed</a></li>
+            <li><a href="<?php print $_SERVER['PHP_SELF'];?>?action=export&amp;header">Download reports I filed</a></li>
         </ul>
     </nav>
     <?php if ($reports_found && is_numeric($_GET['id'])) : ?>
