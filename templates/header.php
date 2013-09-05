@@ -98,7 +98,7 @@
                 </li>
             </ul>
         </div>
-        <h1>Welcome, <strong><?php echo he(idx($me, 'name')); ?></strong></h1>
+        <h1><a href="/" title="View your dashboard">Welcome, <strong><?php echo he(idx($me, 'name')); ?></strong></a></h1>
         <ul>
             <li><a href="<?php print $FB->getLogoutUrl();?>" id="fb-logout-button" class="facebook-button">Log out of Facebook</a></li>
         </ul>
