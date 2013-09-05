@@ -124,7 +124,7 @@ if (isset($_GET['who'])) {
         </li>
     </ul>
     <?php if ($requester) : ?>
-    <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know that you wrote this report. If you feel comfortable doing so, you can <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>">click here to send them a message</a>.</p>
+    <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know that you wrote this report. If you feel comfortable doing so, you can <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>" target="_top">click here to send them a message</a>.</p>
     <?php endif; ?>
     <?php } else if ($_REQUEST['submit'] && empty($_REQUEST['reportee_id'])) { ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
@@ -139,7 +139,7 @@ if (isset($_GET['who'])) {
             <?php
             reporteeNameField(array(
                 'label' => 'I want to know if there are any reports about',
-                'description_html' => 'Enter the name of the person you\'d like to find reports about. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/">Facebook user ID number</a>, you can use that, too.)'
+                'description_html' => 'Enter the name of the person you\'d like to find reports about. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.)'
             ));?>
         </fieldset>
         <input type="submit" name="submit" value="Find reports" />

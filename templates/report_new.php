@@ -26,7 +26,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             <?php
             reporteeNameField(array(
                 'label' => 'This report is about',
-                'description_html' => 'If this is not already pre-filled, enter the name of the person you\'re reporting. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/">Facebook user ID number</a>, you can use that, too.)'
+                'description_html' => 'If this is not already pre-filled, enter the name of the person you\'re reporting. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.)'
             ));?>
 <!--
             <label>
