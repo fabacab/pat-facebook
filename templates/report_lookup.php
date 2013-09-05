@@ -130,7 +130,7 @@ if (isset($_GET['who'])) {
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
         <?php clarifyReportee($search_results, array('description' => "Please clarify who you're trying to find reports about."));?>
     </form>
-    <?php } else { ?>
+    <?php } else if ($_REQUEST['submit']) { ?>
     <p>No report matching this description could be found. Maybe you want to <a href="<?php print he(AppInfo::getUrl('/reports.php?action=new'));?>">file one</a>?</p>
     <?php } ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
