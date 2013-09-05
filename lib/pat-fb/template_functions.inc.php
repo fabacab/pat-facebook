@@ -67,9 +67,10 @@ function clarifyReportee ($search_results, $params = array()) {
 
 function reportList ($reports) {
 ?>
-    <ol>
+    <p class="pat-reports description"><strong>Legend:</strong> Reports you've recently viewed look like <a href="/" rel="bookmark">this</a>. Reports you haven't yet viewed look like <a href="http://not-actually-a-real-place-to-visit.example/" rel="bookmark">this</a>.</p>
+    <ol class="pat-reports">
         <?php foreach ($reports as $v) : ?>
-        <li><a href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?>: <?php print he($v->report_title);?></a>.</li>
+        <li><a rel="bookmark" href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?>: <?php print he($v->report_title);?></a>.</li>
         <?php endforeach;?>
     </ol>
 <?php
