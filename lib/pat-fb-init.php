@@ -15,6 +15,11 @@ if (substr(AppInfo::getUrl(), 0, 8) != 'https://' && !isLocalhost()) {
 // Load the Facebook PHP SDK
 require_once('facebook/src/facebook.php');
 
+// Load our own libraries.
+require 'pat-fb/FacebookEntity.class.php';
+require 'pat-fb/PATIncident.class.php';
+require 'pat-fb/template_functions.inc.php';
+
 $FB = new Facebook(array(
   'appId'  => AppInfo::appID(),
   'secret' => AppInfo::appSecret(),
@@ -26,9 +31,8 @@ $user_id = $FB->getUser();
 if ($user_id) {
     try {
         // Fetch the viewer's basic information
-        $me = $FB->api('/me');
-        // Fetch friends list.
-        $friends = idx($FB->api('/me/friends?fields=id,name,gender,picture.type(square),bio,installed'), 'data');
+        $me = new FacebookEntity($FB, 'me');
+        $me->loadFriends('id,name,gender,picture.type(square),bio,installed');
     } catch (FacebookApiException $e) {
         // If the call fails we check if we still have a user. The user will be
         // cleared if the error is because of an invalid accesstoken
@@ -42,10 +46,6 @@ if ($user_id) {
 // Fetch the basic info of the app that they are using
 $app_info = $FB->api('/'. AppInfo::appID());
 $app_name = idx($app_info, 'name');
-
-// Load our own libraries.
-require 'pat-fb/PATIncident.class.php';
-require 'pat-fb/template_functions.inc.php';
 
 // Some global settings.
 date_default_timezone_set('UTC');

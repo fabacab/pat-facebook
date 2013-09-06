@@ -18,7 +18,7 @@
  *                      )
  */
 function reporteeNameField ($params = array()) {
-    global $user_id, $friends, $reportee_id, $reportee_data;
+    global $me, $reportee_id, $reportee_data;
 ?>
             <input type="hidden" id="reportee_id" name="reportee_id" value="<?php print he($reportee_id);?>" />
             <label>
@@ -36,7 +36,7 @@ function reporteeNameField ($params = array()) {
                 />.
                 <datalist id="friends-list">
                     <select><!-- For non-HTML5 fallback. -->
-                        <?php foreach ($friends as $friend) : ?>
+                        <?php foreach ($me->friends as $friend) : ?>
                         <option value="<?php print he($friend['name']);?>"><?php print he($friend['id']);?></option>
                         <?php endforeach;?>
                     </select>
