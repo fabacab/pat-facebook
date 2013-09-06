@@ -1,8 +1,10 @@
 <?php
 require_once 'PATFacebookDatabase.class.php';
+require_once 'FacebookEntity.class.php';
 
 class PATIncident {
     private $db;
+    private $reader; // The entity against whom to determine visibility settings.
 
     function PATIncident ($info) {
         $this->db = new PATFacebookDatabase('postgres');
@@ -15,6 +17,10 @@ class PATIncident {
                 $this->loadFromDatabase();
             }
         }
+    }
+
+    public function setReader ($entity) {
+        $this->reader = $entity;
     }
 
     public function fieldsValidate () {
@@ -31,6 +37,9 @@ class PATIncident {
                     break;
                 case 'report_text':
                     $this->validateReportText();
+                    break;
+                case 'report_visibility':
+                    $this->validateReportVisibility();
                     break;
                 case 'contactable':
                     $this->validateContactable();
@@ -78,6 +87,20 @@ class PATIncident {
         return true;
     }
 
+    private function validateReportVisibility () {
+        switch ($this->report_visibility) {
+            case 'public':
+            case 'friends':
+            case 'reporters':
+            case 'reporter_friends':
+                return true;
+                break;
+            default:
+                $this->validation_errors['report_visibility'] = array("Report visibility '{$this->report_visibility}' not an understood value.");
+                return false;
+        }
+    }
+
     private function validateContactable () {
         switch ($this->contactable) {
             case 'approval':
@@ -98,6 +121,7 @@ class PATIncident {
      *   reportee_id   BIGINT NOT NULL,
      *   report_title  VARCHAR(255),
      *   report_text   TEXT NOT NULL,
+     *   report_visibility VARCHAR(255) NOT NULL,
      *   contactable   VARCHAR(255) NOT NULL,
      *   report_date   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
      * );
@@ -106,9 +130,9 @@ class PATIncident {
         if ('postgres' === $this->db->getType()) {
             $result = pg_query_params(
                 $this->db->getHandle(),
-                'INSERT INTO incidents (reporter_id, reportee_id, report_title, report_text, contactable)' .
-                ' VALUES ($1, $2, $3, $4, $5) RETURNING id;',
-                array($this->reporter_id, $this->reportee_id, $this->report_title, $this->report_text, $this->contactable)
+                'INSERT INTO incidents (reporter_id, reportee_id, report_title, report_text, report_visibility, contactable)' .
+                ' VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;',
+                array($this->reporter_id, $this->reportee_id, $this->report_title, $this->report_text, $this->report_visibility, $this->contactable)
             );
             if (pg_num_rows($result)) {
                 return pg_fetch_object($result);
@@ -129,6 +153,49 @@ class PATIncident {
                 }
             }
         }
+    }
+
+    public function isVisible() {
+        switch ($this->report_visibility) {
+            case 'public':
+                return true;
+            case 'friends':
+                return $this->reader->isFriendsWith($this->reporter_id);
+            case 'reporters':
+                foreach ($this->getAllReporters() as $reporter) {
+                    if ($this->reader->getId() == $reporter) {
+                        return true;
+                    }
+                }
+                return false;
+            case 'reporter_friends':
+                if ($this->reader->isFriendsWith($this->reporter_id)) {
+                    foreach ($this->getAllReporters() as $reporter) {
+                        if ($this->reader->getId() == $reporter) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            default:
+                return false; // Better safe than sorry.
+        }
+    }
+
+    private function getAllReporters () {
+        $r = array();
+        if ('postgres' === $this->db->getType()) {
+            $result = pg_query_params($this->db->getHandle(),
+                'SELECT DISTINCT reporter_id FROM incidents WHERE reportee_id=$1',
+                array($this->reportee_id)
+            );
+            if (pg_num_rows($result)) {
+                while ($row = pg_fetch_object($result)) {
+                    $r[] = $row->reporter_id;
+                }
+            }
+        }
+        return $r;
     }
 
 }

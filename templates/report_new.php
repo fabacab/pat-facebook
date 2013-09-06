@@ -6,6 +6,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
         'reportee_id' => $_REQUEST['reportee_id'],
         'report_title' => $_REQUEST['report_title'],
         'report_text' => $_REQUEST['report_text'],
+        'report_visibility' => $_REQUEST['report_visibility'],
         'contactable' => $_REQUEST['communication_preference']
     ));
     if ($report->fieldsValidate()) {
@@ -89,6 +90,40 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                 <span class="description">This option (filing non-anonymously) means that anyone who asks will be shown that you wrote this report. Only use this option if you are comfortable letting <em>everyone on the Internet</em> know that you filed this report.</span>
             </label>
         </fieldset>
+        <fieldset><legend>Report visibility</legend>
+            <label>
+                <input type="radio" name="report_visibility" value="public" required="required"
+                    <?php if ($_REQUEST['report_visibility'] === 'public') : ?>
+                    checked="checked"
+                    <?php endif;?>
+                /> I want the entire Internet to be able to read this report.
+                <span class="description">This option makes your report visible to the public. Everyone one the Internet will be able to find and read your report.</span>
+            </label>
+            <label>
+                <input type="radio" name="report_visibility" value="friends"
+                    <?php if (!isset($_REUQEST['report_visibility']) || $_REQUEST['report_visibility'] === 'friends') : ?>
+                    checked="checked"
+                    <?php endif;?>
+                /> I only want my Facebook friends to be able to read this report.
+                <span class="description">This option hides your report from everyone except your Facebook friends.</span>
+            </label>
+            <label>
+                <input type="radio" name="report_visibility" value="reporters"
+                    <?php if ($_REQUEST['report_visibility'] === 'reporters') : ?>
+                    checked="checked"
+                    <?php endif;?>
+                /> I only want other people who have reported this individual to be able to read this report.
+                <span class="description">This option hides your report from everyone unless they, too, have filed a report about this individual.</span>
+            </label>
+            <label>
+                <input type="radio" name="report_visibility" value="reporter_friends"
+                    <?php if ($_REQUEST['report_visibility'] === 'reporter_friends') : ?>
+                    checked="checked"
+                    <?php endif;?>
+                /> I only want my Facebook friends who have reported this individual to be able to read this report.
+                <span class="description">This option hides your report from everyone unless they are your Facebook friend <em>and</em> they, too, have filed a report about this individual.</span>
+            </label>
+        </fieldset>
         <input type="submit" name="submit" value="File this report" />
     </form>
     <?php } else if (empty($_REQUEST['reportee_id'])) { ?>
@@ -97,6 +132,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
         <input type="hidden" name="report_title" value="<?php print he($_REQUEST['report_title']);?>" />
         <input type="hidden" name="report_text" value="<?php print he($_REQUEST['report_text']);?>" />
         <input type="hidden" name="communication_preference" value="<?php print he($_REQUEST['communication_preference']);?>" />
+        <input type="hidden" name="report_visibility" value="<?php print he($_REQUEST['report_visibility']);?>" />
         <?php clarifyReportee($search_results, array('description' => "Please clarify who you're filing this report about. It's important this field is accurate, so double-check just to be sure!"));?>
     </form>
     <?php } ?>

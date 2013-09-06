@@ -4,19 +4,26 @@ $db->connect(psqlConnectionStringFromDatabaseUrl());
 $reports_found = array();
 if (is_numeric($_GET['id'])) {
     $report = new PATIncident(array('id' => $_GET['id']));
-    if ($report->reportee_id) {
-        // Get information about the reportee.
-        $reportee = $FB->api("/{$report->reportee_id}?fields=name,picture.type(square),link");
-        if ($reportee['picture']['data']['url']) {
-            $reportee['picture'] = $reportee['picture']['data']['url'];
-        }
-        // Automatically search for any other reports against this user ID.
-        $result = pg_query_params($db->getHandle(),
-            'SELECT id, report_date FROM incidents WHERE reportee_id=$1 AND id <> $2 ORDER BY report_date DESC;',
-            array($report->reportee_id, $report->id)
-        );
-        while ($row = pg_fetch_object($result)) {
-            $reports_found[] = $row;
+    $report->setReader($me);
+    if ($report->isVisible()) {
+        if ($report->reportee_id) {
+            // Get information about the reportee.
+            $reportee = $FB->api("/{$report->reportee_id}?fields=name,picture.type(square),link");
+            if ($reportee['picture']['data']['url']) {
+                $reportee['picture'] = $reportee['picture']['data']['url'];
+            }
+            // Automatically search for any other reports against this user ID.
+            $result = pg_query_params($db->getHandle(),
+                'SELECT id, report_date FROM incidents WHERE reportee_id=$1 AND id <> $2 ORDER BY report_date DESC;',
+                array($report->reportee_id, $report->id)
+            );
+            while ($row = pg_fetch_assoc($result)) {
+                $r = new PATIncident($row);
+                $r->setReader($me);
+                if ($r->isVisible()) {
+                    $reports_found[] = $r;
+                }
+            }
         }
     }
 } else if (isset($_GET['mine'])) {
@@ -25,8 +32,12 @@ if (is_numeric($_GET['id'])) {
         array($user_id)
     );
     if (pg_num_rows($result)) {
-        while ($row = pg_fetch_object($result)) {
-            $reports_found[] = $row;
+        while ($row = pg_fetch_assoc($result)) {
+            $r = new PATIncident($row);
+            $r->setReader($me);
+            if ($r->isVisible()) {
+                $reports_found[] = $r;
+            }
         }
     }
 } else if (is_numeric($_REQUEST['reportee_id'])) {
@@ -36,8 +47,12 @@ if (is_numeric($_GET['id'])) {
         array($_REQUEST['reportee_id'])
     );
     if (pg_num_rows($result)) {
-        while ($row = pg_fetch_object($result)) {
-            $reports_found[] = $row;
+        while ($row = pg_fetch_assoc($result)) {
+            $r = new PATIncident($row);
+            $r->setReader($me);
+            if ($r->isVisible()) {
+                $reports_found[] = $r;
+            }
         }
     }
 }
@@ -138,7 +153,7 @@ if (isset($_GET['who'])) {
         <fieldset><legend>Reportee details</legend>
             <?php
             reporteeNameField(array(
-                'label' => 'I want to know if there are any reports about',
+                'label' => 'I want to know if there are any visible reports about',
                 'description_html' => 'Enter the name of the person you\'d like to find reports about. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.)'
             ));?>
         </fieldset>

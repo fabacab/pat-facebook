@@ -14,9 +14,9 @@ $reports_about_reported = array();
 $sql_vals = array();
 $sql = 'SELECT id, reportee_id FROM incidents WHERE reportee_id IN (';
 $i = 1;
-foreach ($me->friends as $friend) {
+foreach ($me->getFriends() as $friend) {
     $sql .= "\$$i"; // Bind query parameter position.
-    if ($i !== count($me->friends)) {
+    if ($i !== count($me->getFriends())) {
         $sql .= ','; // Only add trailing comma if not last time through loop.
     }
     array_push($sql_vals, $friend['id']); // Add value to array.
@@ -29,7 +29,7 @@ $result = pg_query_params($db->connect(psqlConnectionStringFromDatabaseUrl()),
 );
 if (pg_num_rows($result)) {
     while ($row = pg_fetch_object($result)) {
-        foreach ($me->friends as $friend) {
+        foreach ($me->getFriends() as $friend) {
             if ($friend['id'] == $row->reportee_id) {
                 $friend['pat_report_id'] = $row->id;
                 $reports_about_friends[] = $friend;

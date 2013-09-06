@@ -5,8 +5,8 @@
 
 class FacebookEntity {
     var $FB; // Facebook PHP SDK's Facebook object
-    var $id; // Facebook Graph ID
-    var $friends = array();
+    private $id; // Facebook Graph ID
+    private $friends = array();
 
     function FacebookEntity ($FB, $who = 'me') {
         $this->FB = $FB;
@@ -14,6 +14,14 @@ class FacebookEntity {
         foreach ($data as $k => $v) {
             $this->$k = $v;
         }
+    }
+
+    public function getId () {
+        return $this->id;
+    }
+
+    public function getFriends () {
+        return $this->friends;
     }
 
     function loadFriends ($fields = 'id,name,gender,picture.type(square),bio,installed') {
