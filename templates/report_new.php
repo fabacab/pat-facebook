@@ -101,7 +101,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             </label>
             <label>
                 <input type="radio" name="report_visibility" value="friends"
-                    <?php if (!isset($_REUQEST['report_visibility']) || $_REQUEST['report_visibility'] === 'friends') : ?>
+                    <?php if (!isset($_REQUEST['report_visibility']) || $_REQUEST['report_visibility'] === 'friends') : ?>
                     checked="checked"
                     <?php endif;?>
                 /> I only want my Facebook friends to be able to read this report.
