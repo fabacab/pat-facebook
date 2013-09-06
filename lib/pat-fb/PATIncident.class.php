@@ -156,6 +156,10 @@ class PATIncident {
     }
 
     public function isVisible() {
+        // Always visible to oneself.
+        if ($this->reporter_id == $this->reader->getId()) {
+            return true;
+        }
         switch ($this->report_visibility) {
             case 'public':
                 return true;
