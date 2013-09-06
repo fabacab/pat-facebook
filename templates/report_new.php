@@ -74,8 +74,8 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             </label>
 -->
             <label>
-                <input type="radio" name="communication_preference" value="approval"
-                    <?php if (!isset($_REUQEST['communication_preference']) || $_REQUEST['communication_preference'] === 'do_not_contact') : ?>
+                <input type="radio" name="communication_preference" value="approval" required="required"
+                    <?php if (!isset($_REUQEST['communication_preference']) || $_REQUEST['communication_preference'] === 'approval') : ?>
                     checked="checked"
                     <?php endif;?>
                 /> <!--I'd like to file this report under my name, but -->I do not want other people to learn that I wrote this report unless I approve of them knowing.
@@ -83,7 +83,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             </label>
             <label>
                 <input type="radio" name="communication_preference" value="allowed"
-                    <?php if ($_REQUEST['communication_preference'] === 'contact_allowed') : ?>
+                    <?php if ($_REQUEST['communication_preference'] === 'allowed') : ?>
                     checked="checked"
                     <?php endif;?>
                 /> <!--I'd like to file this report under my name and -->I would like others to be able to contact me about this report as soon as they are interested in doing so.
