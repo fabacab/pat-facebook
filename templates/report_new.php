@@ -61,7 +61,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                 <?php endforeach;?>
                 </ul>
                 <?php endif; ?>
-                <input id="report_title" name="report_title" placeholder="Keywords/summary of main point" required="required" value="<?php print he($_REQUEST['report_title']);?>" />
+                <input id="report_title" name="report_title" placeholder="Keywords/summary of main point" value="<?php print he($_REQUEST['report_title']);?>" />
             </label>
 <!-- TODO: Should we add "when/where" questions, too? -->
         </fieldset>
