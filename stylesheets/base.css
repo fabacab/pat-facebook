@@ -410,6 +410,14 @@ footer .GlobalNavigation li:last-child::after {
 #pat-report-info p {
     margin: 1em 0;
 }
+.pat-report-meta {
+    float: right;
+}
+#pat-report-info .pat-report-meta li {
+    text-align: right;
+    display: list-item;
+    width: auto;
+}
 
 /* ------------------------------------------ */
 

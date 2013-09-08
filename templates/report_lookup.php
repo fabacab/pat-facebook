@@ -129,6 +129,42 @@ if (isset($_GET['who'])) {
     </p>
     <article id="pat-report-info">
         <h1><?php print he($report->report_title);?></h1>
+        <?php if ($user_id == $report->reporter_id) : ?>
+        <ul class="pat-report-meta">
+            <li>
+                Your identity will be revealed to
+                <?php
+                switch ($report->contactable) {
+                    case 'allowed':
+                        print 'anyone who asks';
+                        break;
+                    case 'approval':
+                        print 'people you approve knowing';
+                        break;
+                }
+                ?>.
+            </li>
+            <li>
+                Report is visible to
+                <?php
+                switch ($report->report_visibility) {
+                    case 'public':
+                        print 'everyone';
+                        break;
+                    case 'friends':
+                        print 'your friends only';
+                        break;
+                    case 'reporters':
+                        print 'others who filed a report about the same person';
+                        break;
+                    case 'reporter_friends':
+                        print 'other friends of yours who also filed a report about the same person';
+                        break;
+                }
+                ?>.
+            </li>
+        </ul>
+        <?php endif;?>
         <p>This report is about: <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a>:</p>
         <blockquote><p><?php print he($report->report_text);?></p></blockquote>
     </article>
