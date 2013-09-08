@@ -12,7 +12,7 @@ $reports_about_reported = array();
 
 // Search for any reports against this user's friends.
 $sql_vals = array();
-$sql = 'SELECT id, reportee_id FROM incidents WHERE reportee_id IN (';
+$sql = 'SELECT * FROM incidents WHERE reportee_id IN (';
 $i = 1;
 foreach ($me->getFriends() as $friend) {
     $sql .= "\$$i"; // Bind query parameter position.
@@ -28,11 +28,15 @@ $result = pg_query_params($db->connect(psqlConnectionStringFromDatabaseUrl()),
     $sql_vals
 );
 if (pg_num_rows($result)) {
-    while ($row = pg_fetch_object($result)) {
-        foreach ($me->getFriends() as $friend) {
-            if ($friend['id'] == $row->reportee_id) {
-                $friend['pat_report_id'] = $row->id;
-                $reports_about_friends[] = $friend;
+    while ($row = pg_fetch_assoc($result)) {
+        $r = new PATIncident($row);
+        $r->setReader($me);
+        if ($r->isVisible()) {
+            foreach ($me->getFriends() as $friend) {
+                if ($friend['id'] == $row['reportee_id']) {
+                    $friend['pat_report_id'] = $row['id'];
+                    $reports_about_friends[] = $friend;
+                }
             }
         }
     }
@@ -40,13 +44,17 @@ if (pg_num_rows($result)) {
 
 // Search for any reports filed by other people about people I've reported.
 $sql_vals = array();
-$sql  = 'SELECT id, reportee_id FROM incidents WHERE reportee_id IN (';
+$sql  = 'SELECT * FROM incidents WHERE reportee_id IN (';
 $sql .= 'SELECT reportee_id FROM incidents WHERE reporter_id=$1';
 $sql .= ') AND reporter_id <> $1';
 $result = pg_query_params($db->getHandle(), $sql, array($user_id));
 if (pg_num_rows($result)) {
-    while ($row = pg_fetch_object($result)) {
-        $reports_about_reported[] = $row;
+    while ($row = pg_fetch_assoc($result)) {
+        $r = new PATIncident($row);
+        $r->setReader($me);
+        if ($r->isVisible()) {
+            $reports_about_reported[] = $r;
+        }
     }
 }
 ?>
