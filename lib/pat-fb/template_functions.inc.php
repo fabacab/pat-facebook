@@ -67,11 +67,20 @@ function clarifyReportee ($search_results, $params = array()) {
 
 function reportList ($reports) {
 ?>
-    <p class="pat-reports description"><strong>Legend:</strong> Reports you've recently viewed look like <a href="/" rel="bookmark">this</a>. Reports you haven't yet viewed look like <a href="http://not-actually-a-real-place-to-visit.example/" rel="bookmark">this</a>.</p>
     <ol class="pat-reports">
-        <?php foreach ($reports as $v) : ?>
-        <li><a rel="bookmark" href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$v->id}");?>">View report filed on <?php print he(date('F j, Y', strtotime($v->report_date)));?>: <?php print he($v->report_title);?></a>.</li>
-        <?php endforeach;?>
+    <?php
+    foreach ($reports as $report) {
+        reportListItem($report);
+    }
+    ?>
     </ol>
+    <p class="pat-reports description">(In the list above, reports you've recently viewed look like <a href="/" rel="bookmark">this</a>. Reports you haven't yet viewed look like <a href="http://not-actually-a-real-place-to-visit.example/" rel="bookmark">this</a>.)</p>
+<?php
+}
+
+function reportListItem ($report) {
+    $title = ($report->report_title) ? $report->report_title : 'untitled report';
+?>
+        <li><a rel="bookmark" href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$report->id}");?>">View "<span class="pat-report-title"><?php print he($title);?></span>", filed on <?php print he(date('F j, Y', strtotime($report->report_date)));?></a>.</li>
 <?php
 }

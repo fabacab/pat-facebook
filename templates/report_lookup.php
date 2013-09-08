@@ -127,17 +127,11 @@ if (isset($_GET['who'])) {
         <?php } ?>
         filed this report<?php if ($reporter_notified) : ?> has been notified of your interest. If they choose to do so, they'll send you a Facebook message. (You may want to double-check <a href="https://www.facebook.com/messages/other/">your "Other" mailbox</a> occasionally to ensure you don't miss their message.)<?php endif;?>.
     </p>
-    <ul id="report-info">
-        <li>This report is about: <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a></li>
-        <li>
-            Report title:
-            <blockquote><p><?php print he($report->report_title);?></p></blockquote>
-        </li>
-        <li>
-            Reported incident:
-            <blockquote><p><?php print he($report->report_text);?></p></blockquote>
-        </li>
-    </ul>
+    <article id="pat-report-info">
+        <h1><?php print he($report->report_title);?></h1>
+        <p>This report is about: <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a>:</p>
+        <blockquote><p><?php print he($report->report_text);?></p></blockquote>
+    </article>
     <?php if ($requester) : ?>
     <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know that you wrote this report. If you feel comfortable doing so, you can <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>" target="_top">click here to send them a message</a>.</p>
     <?php endif; ?>
