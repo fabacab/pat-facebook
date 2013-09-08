@@ -1,3 +1,6 @@
 [submodule "lib/facebook"]
 	path = lib/facebook
 	url = https://github.com/facebook/facebook-php-sdk.git
+[submodule "docs"]
+	path = docs
+	url = git@github.com:meitar/pat-facebook.wiki.git
