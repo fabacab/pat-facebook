@@ -2,6 +2,7 @@
 require_once 'lib/pat-fb-init.php';
 
 $reportee_id = ($_REQUEST['reportee_id']) ? $_REQUEST['reportee_id'] : '';
+$search_results = array();
 if (is_numeric($reportee_id)) {
     try {
         $reportee_data = $FB->api("/$reportee_id");
@@ -13,15 +14,27 @@ if (is_numeric($reportee_id)) {
         // user ID number for the user they wish to report.
     }
 } else if (empty($reportee_id) && !empty($_REQUEST['reportee_name'])) {
-    if (is_numeric($_REQUEST['reportee_name'])) {
-        $reportee_data = $FB->api("/{$_REQUEST['reportee_name']}");
-    } else {
-        $x = $FB->api(
-            '/search?type=user&q=' . urlencode($_REQUEST['reportee_name']) .
-            '&fields=id,name,picture.type(square),gender,bio,birthday,link'
-        );
-        if ($x['data']) {
-            $search_results = $x['data'];
+    // If the "name" is numeric or doesn't have spaces, assume it's an ID or an
+    // unique username, so do that search first.
+    if (is_numeric($_REQUEST['reportee_name']) || (false === strpos($_REQUEST['reportee_name'], ' '))) {
+        $search_results[] = $FB->api("/{$_REQUEST['reportee_name']}");
+    }
+    // But then always do a Graph Search, too.
+    $x = $FB->api(
+        '/search?type=user&q=' . urlencode($_REQUEST['reportee_name']) .
+        '&fields=id,name,picture.type(square),gender,bio,birthday,link' .
+        '&limit=200' // TODO: Customize or paginate this.
+    );
+    if ($x['data']) {
+        foreach ($x['data'] as $result) {
+            array_push($search_results, $result);
+        }
+    } else if (false !== strpos($_REQUEST['reportee_name'], ' ')) {
+        // If we didn't get any results, try guessing their username.
+        $username = str_replace(' ', '', $_REQUEST['reportee_name']);
+        $x = $FB->api("/$username");
+        if ($x) {
+            $search_results[] = $x;
         }
     }
 }

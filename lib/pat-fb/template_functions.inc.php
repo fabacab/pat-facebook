@@ -55,7 +55,7 @@ function clarifyReportee ($search_results, $params = array()) {
         <?php if ($search_results) { ?>
         <ul id="disambiguate-reportee">
             <?php foreach ($search_results as $result) : ?>
-            <li><label><input type="radio" name="reportee_id" value="<?php print he($result['id']);?>" /> <img alt="" src="<?php print he($result['picture']['data']['url']);?>" /><a href="<?php print he($result['link']);?>" target="_blank"><?php print he($result['name']);?> (<?php print ($result['gender']) ? he($result['gender']): he('unknown');?>)</a></label></li>
+            <li><label><input type="radio" name="reportee_id" value="<?php print he($result['id']);?>" /> <img alt="" src="https://graph.facebook.com/<?php print he($result['id']);?>/picture" /><a href="<?php print he($result['link']);?>" target="_blank"><?php print he($result['name']);?> (<?php print ($result['gender']) ? he($result['gender']): he('unknown');?>)</a></label></li>
             <?php endforeach;?>
         </ul>
         <input type="submit" name="submit_clarification" value="Yes, that's who I mean." />

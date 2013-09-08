@@ -59,16 +59,21 @@
         });
 
         $('#reportee_name').change(function() {
-          $('#disambiguate-reportee-container').remove();
           $('#reportee_name').after('<span class="fetch-progress">(loading&hellip;)</span>');
-          if (isNumeric(this.value)) {
+          if (isNumeric(this.value) || (-1 == this.value.indexOf(' '))) {
               FB.api(
                   '/' + encodeURIComponent(this.value) + '?fields=id,name,picture.type(square),gender,bio,link',
                   PAT_Facebook.UI.handleReporteeSearch
               );
-          } else {
+          }
+          FB.api(
+              '/search?type=user&fields=id,name,picture.type(square),gender,bio,birthday,link&q=' + encodeURIComponent(this.value),
+              PAT_Facebook.UI.handleReporteeSearch
+          );
+          if (-1 != this.value.indexOf(' ')) {
+              var username = this.value.replace(' ', '');
               FB.api(
-                  '/search?type=user&fields=id,name,picture.type(square),gender,bio,birthday,link&q=' + encodeURIComponent(this.value),
+                  '/' + encodeURIComponent(username) + '?fields=id,name,picture.type(square),gender,bio,link',
                   PAT_Facebook.UI.handleReporteeSearch
               );
           }
@@ -76,6 +81,16 @@
       });
 
 PAT_Facebook = {};
+PAT_Facebook.search_results = [];
+PAT_Facebook.addSearchResults = function (results) {
+    for (var i = 0; i < results.length; i++) {
+        PAT_Facebook.search_results.push(results[i]);
+    }
+    $.event.trigger({
+        'type': 'searchResultsAdded',
+        'results': results
+    });
+}
 PAT_Facebook.UI = {};
 PAT_Facebook.UI.handleReporteeSearch = function (response) {
     if (response.error) {
@@ -84,54 +99,68 @@ PAT_Facebook.UI.handleReporteeSearch = function (response) {
         }
         return false;
     }
-    $('label .fetch-progress').remove();
-    // Dynamically create a list of clickable options.
-    var el = document.createElement('div');
-    el.setAttribute('id', 'disambiguate-reportee-container');
-    var list = document.createElement('ul');
-    list.setAttribute('id', 'disambiguate-reportee');
-    // If we searched for an ID, we probably didn't get an array. Check for that,
-    // and if that does seem to be what's up, coerce the data structure we expect.
-    if (!response.data && response.id) {
-        response.data = [];
-        response.data[0] = {};
-        for (var k in response) {
-            if (response.hasOwnProperty(k)) {
-                response.data[0][k] = response[k];
-            }
-        }
+    if (response.data) { // multiple results
+        PAT_Facebook.addSearchResults(response.data);
     }
-    for (var i = 0; i < response.data.length; i++) {
+    if (response.id) { // only one result, so coerce
+        var results = [];
+        results[0] = response;
+        PAT_Facebook.addSearchResults(results);
+    }
+};
+PAT_Facebook.UI.displayReporteeSearch = function (e) {
+    $('label .fetch-progress').remove();
+    var el = document.getElementById('disambiguate-reportee-container');
+    el.removeAttribute('style'); // re-style to make visible
+    // Dynamically create or add to a list of clickable options.
+    var list = document.querySelector('#disambiguate-reportee-container ul') || document.createElement('ul');
+    list.setAttribute('id', 'disambiguate-reportee');
+
+    for (var i = 0; i < e.results.length; i++) {
         (function(i) {
             var li = document.createElement('li');
-            var fbid = response.data[i].id;
-            var name = response.data[i].name;
-            var pic  = response.data[i].picture.data.url;
-            var sex  = response.data[i].gender;
-            var bio  = response.data[i].bio;
-            var bday = response.data[i].birthday;
-            var link = response.data[i].link;
+            var label = document.createElement('label');
+            var fbid = e.results[i].id;
+            var name = e.results[i].name;
+            var pic  = 'https://graph.facebook.com/' + e.results[i].id + '/picture';
+            var sex  = e.results[i].gender;
+            var bio  = e.results[i].bio;
+            var bday = e.results[i].birthday;
+            var link = e.results[i].link;
             li.setAttribute('data-fbid', fbid);
-            var html = '<a href="' + link + '" target="_blank">';
+            var html = '<input type="radio" />';
             html += '<img alt="' + name + ' (' + sex + ')' + '" src="' + pic + '" />';
+            html += '<a href="' + link + '" target="_blank">';
             html += name + ' (' + sex + ')';
             html += (bday) ? ' [Birthday: ' + bday + ']': '';
             html += (bio) ? '<br />' + bio : '';
             html += '</a>';
-            li.innerHTML = html;
-            $(li).click(function() {
+            label.innerHTML = html;
+            $(label).click(function() {
                 $('#reportee_id').attr('value', fbid);
                 $('#reportee_name').attr('value', name);
                 $('#reportee_picture').attr({
                     'src': pic,
                     'style': ''
                 });
-                $('#disambiguate-reportee-container').remove();
+                $('#disambiguate-reportee-container').hide();
+                $('#disambiguate-reportee-container ul').remove();
             });
+            li.appendChild(label);
             list.appendChild(li);
         })(i)
     }
     el.innerHTML = '<p>Which "' + document.getElementById('reportee_name').value + '" did you mean?</p>';
     el.appendChild(list);
-    $('#reportee_name').closest('form')[0].appendChild(el);
 };
+PAT_Facebook.init = function () {
+    // Prepare DOM for event handlers.
+    if (document.getElementById('reportee_name')) {
+        var el = document.createElement('div');
+        el.setAttribute('id', 'disambiguate-reportee-container');
+        el.setAttribute('style', 'display: none;');
+        $('#reportee_name').closest('form')[0].appendChild(el);
+        $(el).on('searchResultsAdded', PAT_Facebook.UI.displayReporteeSearch);
+    }
+}
+window.addEventListener('DOMContentLoaded', PAT_Facebook.init);
