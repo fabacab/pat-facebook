@@ -1,6 +1,5 @@
 <?php
 require_once 'PATFacebookDatabase.class.php';
-require_once 'FacebookEntity.class.php';
 
 class PATIncident {
     private $db;

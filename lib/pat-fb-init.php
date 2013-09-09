@@ -16,7 +16,7 @@ if (substr(AppInfo::getUrl(), 0, 8) != 'https://' && !isLocalhost()) {
 require_once('facebook/src/facebook.php');
 
 // Load our own libraries.
-require 'pat-fb/FacebookEntity.class.php';
+require 'pat-fb/PATFacebookUser.class.php';
 require 'pat-fb/PATIncident.class.php';
 require 'pat-fb/template_functions.inc.php';
 
@@ -31,7 +31,7 @@ $user_id = $FB->getUser();
 if ($user_id) {
     try {
         // Fetch the viewer's basic information
-        $me = new FacebookEntity($FB, 'me');
+        $me = new PATFacebookUser($FB);
         $me->loadFriends('id,name,gender,picture.type(square),bio,installed');
     } catch (FacebookApiException $e) {
         // If the call fails we check if we still have a user. The user will be
