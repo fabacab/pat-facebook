@@ -12,7 +12,7 @@ if (is_numeric($_GET['id'])) {
             }
             // Automatically search for any other reports against this user ID.
             $result = pg_query_params($db->getHandle(),
-                'SELECT id, report_date FROM incidents WHERE reportee_id=$1 AND id <> $2 ORDER BY report_date DESC;',
+                'SELECT * FROM incidents WHERE reportee_id=$1 AND id <> $2 ORDER BY report_date DESC;',
                 array($report->reportee_id, $report->id)
             );
             while ($row = pg_fetch_assoc($result)) {
