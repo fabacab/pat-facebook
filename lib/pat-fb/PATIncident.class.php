@@ -134,7 +134,8 @@ class PATIncident {
                 array($this->reporter_id, $this->reportee_id, $this->report_title, $this->report_text, $this->report_visibility, $this->contactable)
             );
             if (pg_num_rows($result)) {
-                return pg_fetch_object($result);
+                $r = pg_fetch_object($result);
+                return $r->id;
             }
         }
     }

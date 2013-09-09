@@ -6,8 +6,8 @@ class PATFacebookUser extends FacebookEntity {
     private $db;
     private $preferences;
 
-    public function __construct ($FB) {
-        parent::__construct($FB, 'me');
+    public function __construct ($FB, $who = 'me') {
+        parent::__construct($FB, $who);
         $this->db = new PATFacebookDatabase('postgres');
         $this->db->connect(psqlConnectionStringFromDatabaseUrl());
         if (!$this->preferences = $this->loadPreferences()) {

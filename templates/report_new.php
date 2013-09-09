@@ -10,8 +10,30 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
         'contactable' => $_REQUEST['communication_preference']
     ));
     if ($report->fieldsValidate()) {
-        if ($result = $report->save()) {
-            header('Location: ' . AppInfo::getUrl($_SERVER['PHP_SELF'] . "?action=lookup&id={$result->id}"));
+        if ($rid = $report->save()) {
+            // get list of other people who have reported this reportee.
+            $result = pg_query_params($db->getHandle(),
+                'SELECT DISTINCT reporter_id FROM incidents WHERE reportee_id = $1 AND reporter_id <> $2',
+                array($report->reportee_id, $report->reporter_id)
+            );
+            // Check those other people's notification preference.
+            while ($row = pg_fetch_assoc($result)) {
+                $usr = new PATFacebookUser($FB, $row['reporter_id']);
+                $prefs = $usr->getPreferences();
+                // If their notification preference is on,
+                if ($prefs['notify_on_same_reportee']) {
+                    $report->setReader($usr);
+                    if ($report->isVisible()) {
+                        // send each of them a notification.
+                        $FB->setAccessToken(getFacebookAppToken());
+                        $FB->api("/{$usr->getId()}/notifications", 'post', array(
+                            'template' => 'Another report was filed in the ' . $FBApp->getAppName() . ' about someone you previously filed a report about; click here for more information.',
+                            'href' => "reports.php?action=lookup&id=$rid"
+                        ));
+                    }
+                }
+            }
+            header('Location: ' . AppInfo::getUrl($_SERVER['PHP_SELF'] . "?action=lookup&id=$rid"));
             exit();
         }
     }
