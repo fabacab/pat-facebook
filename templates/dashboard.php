@@ -1,10 +1,4 @@
 <?php
-// Main dashboard.
-// Show some options of what can be done.
-
-// * Suggest action of filing a report against someone with no reports.
-// * Show list of my friends against whom there ARE reports.
-
 // Initialize.
 $db = new PATFacebookDatabase();
 $reports_about_friends = array();
@@ -34,8 +28,7 @@ if (pg_num_rows($result)) {
         if ($r->isVisible()) {
             foreach ($me->getFriends() as $friend) {
                 if ($friend['id'] == $row['reportee_id']) {
-                    $friend['pat_report_id'] = $row['id'];
-                    $reports_about_friends[] = $friend;
+                    $reports_about_friends[] = $r;
                 }
             }
         }
@@ -94,11 +87,11 @@ if (pg_num_rows($result)) {
         <h3>Reports filed by others about people you've reported</h3>
         <?php if ($reports_about_reported) { ?>
         <ul class="friends">
-        <?php foreach ($reports_about_reported as $x) : ?>
-            <li>
-                <a href="reports.php?action=lookup&amp;id=<?php print he($x->id);?>"><img alt="" src="https://graph.facebook.com/<?php print he($x->reportee_id);?>/picture?type=square" /> View this report.<a/>
-            </li>
-        <?php endforeach; ?>
+        <?php
+        foreach ($reports_about_reported as $x) {
+            reportListItem($x);
+        }
+        ?>
         </ul>
         <!--<p><a href="TK_LINK">See all</a></p>-->
         <?php } else { ?>
@@ -110,11 +103,11 @@ if (pg_num_rows($result)) {
         <h3>Reports filed about your Facebook friends</h3>
         <?php if ($reports_about_friends) { ?>
         <ul class="friends">
-        <?php foreach ($reports_about_friends as $x) : ?>
-            <li>
-                <a href="reports.php?action=lookup&amp;id=<?php print he($x['pat_report_id']);?>"><img src="https://graph.facebook.com/<?php echo he($x['id']) ?>/picture?type=square" alt=""> View this report about <?php print he($x['name']);?></a>
-            </li>
-        <?php endforeach;?>
+        <?php
+        foreach ($reports_about_friends as $x) {
+            reportListItem($x);
+        }
+        ?>
         </ul>
         <!--<p><a href="TK_LINK">See all</a></p>-->
         <?php } else { ?>
