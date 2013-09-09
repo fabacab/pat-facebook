@@ -5,6 +5,8 @@
  * your app
  */
 class AppInfo {
+    private $name;
+    private $link;
 
   /*****************************************************************************
    *
@@ -46,4 +48,15 @@ class AppInfo {
     return $protocol . $_SERVER['HTTP_HOST'] . $path;
   }
 
+    function __construct ($info) {
+        $this->name = $info['name'];
+        $this->link = $info['link'];
+    }
+
+    public function getAppName () {
+        return $this->name;
+    }
+    public function getAppLink () {
+        return $this->link;
+    }
 }

@@ -70,7 +70,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
 <!--
             <label>
                 <input type="radio" name="communication_preference" value="remain_anonymous" /> I'd like to file this report anonymously.
-                <span class="description">This option (filing anonymously) means you will not be able to view your report after you file it. It is <em>forever</em> out of your hands. Moreover, it does not necessarily mean that someone with sufficient knowledge about the events you are reporting would not be able to identify you. All it means is that <?php print he(idx($app_info, 'name'));?> will not make a note that your user account made this report.</span>
+                <span class="description">This option (filing anonymously) means you will not be able to view your report after you file it. It is <em>forever</em> out of your hands. Moreover, it does not necessarily mean that someone with sufficient knowledge about the events you are reporting would not be able to identify you. All it means is that <?php print he($FBApp->getAppName());?> will not make a note that your user account made this report.</span>
             </label>
 -->
             <label>
@@ -79,7 +79,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                     checked="checked"
                     <?php endif;?>
                 /> <!--I'd like to file this report under my name, but -->I do not want other people to learn that I wrote this report unless I approve of them knowing.
-                <span class="description">This option (filing pseudonymously) means that <?php print he(idx($app_info, 'name'));?> will associate your report with your identity, but will only reveal your identity to others who ask about it after confirming with you if you are comfortable letting the other person know who wrote this report. (You'll get a notification letting you know someone's interested when that happens so you don't have to keep checking this site.)</span>
+                <span class="description">This option (filing pseudonymously) means that <?php print he($FBApp->getAppName());?> will associate your report with your identity, but will only reveal your identity to others who ask about it after confirming with you if you are comfortable letting the other person know who wrote this report. (You'll get a notification letting you know someone's interested when that happens so you don't have to keep checking this site.)</span>
             </label>
             <label>
                 <input type="radio" name="communication_preference" value="allowed"

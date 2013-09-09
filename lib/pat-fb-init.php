@@ -44,8 +44,7 @@ if ($user_id) {
 }
 
 // Fetch the basic info of the app that they are using
-$app_info = $FB->api('/'. AppInfo::appID());
-$app_name = idx($app_info, 'name');
+$FBApp = new AppInfo($FB->api('/' . AppInfo::appID()));
 
 // Some global settings.
 date_default_timezone_set('UTC');

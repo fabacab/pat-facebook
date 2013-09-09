@@ -48,7 +48,7 @@ function reporteeNameField ($params = array()) {
 }
 
 function clarifyReportee ($search_results, $params = array()) {
-    global $app_info;
+    global $FBApp;
 ?>
         <p><strong>Which "<?php print he($_REQUEST['reportee_name']);?>" did you mean?</strong></p>
         <p class="description"><?php print he($params['description']);?></p>
@@ -60,7 +60,7 @@ function clarifyReportee ($search_results, $params = array()) {
         </ul>
         <input type="submit" name="submit_clarification" value="Yes, that's who I mean." />
         <? } else { ?>
-        <p>Sorry, but <?php print he(idx($app_info, 'name'));?> couldn't find anyone matching that description.</p>
+        <p>Sorry, but <?php print he($FBApp->getAppName());?> couldn't find anyone matching that description.</p>
         <input type="submit" name="no_match_found" value="Go back to search again" />
         <?php } ?><?php
 }
