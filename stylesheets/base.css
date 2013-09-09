@@ -190,17 +190,36 @@ footer .GlobalNavigation li:last-child::after {
   padding: 32px 5px;
 }
 
-#get-started p {
+#get-started p,
+#get-started li {
   color: #fff;
   font-family: "CorbelRegular";
   font-size: 24px;
   margin-bottom: 24px;
 }
 
+#get-started div {
+    margin-bottom: 24px;
+}
+
 #get-started p span {
   font-family: "HybreaRegular";
   font-size: 22px;
 }
+
+#get-started .description {
+    margin: 0 auto;
+    width: 75%;
+    text-align: left;
+}
+
+#get-started li strong {
+    font-weight: bold;
+}
+#get-started li {
+    list-style-type: disc;
+}
+
 /* ------------------------------------------ */
 
 /* =MainContent/samples spacing
