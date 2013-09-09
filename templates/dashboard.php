@@ -1,34 +1,37 @@
 <?php
 // Initialize.
 $db = new PATFacebookDatabase();
+$db->connect(psqlConnectionStringFromDatabaseUrl());
 $reports_about_friends = array();
 $reports_about_reported = array();
 
 // Search for any reports against this user's friends.
-$sql_vals = array();
-$sql = 'SELECT * FROM incidents WHERE reportee_id IN (';
-$i = 1;
-foreach ($me->getFriends() as $friend) {
-    $sql .= "\$$i"; // Bind query parameter position.
-    if ($i !== count($me->getFriends())) {
-        $sql .= ','; // Only add trailing comma if not last time through loop.
+if ($me->getFriends()) {
+    $sql_vals = array();
+    $sql = 'SELECT * FROM incidents WHERE reportee_id IN (';
+    $i = 1;
+    foreach ($me->getFriends() as $friend) {
+        $sql .= "\$$i"; // Bind query parameter position.
+        if ($i !== count($me->getFriends())) {
+            $sql .= ','; // Only add trailing comma if not last time through loop.
+        }
+        array_push($sql_vals, $friend['id']); // Add value to array.
+        $i++;
     }
-    array_push($sql_vals, $friend['id']); // Add value to array.
-    $i++;
-}
-$sql .= ');';
-$result = pg_query_params($db->connect(psqlConnectionStringFromDatabaseUrl()),
-    $sql,
-    $sql_vals
-);
-if (pg_num_rows($result)) {
-    while ($row = pg_fetch_assoc($result)) {
-        $r = new PATIncident($row);
-        $r->setReader($me);
-        if ($r->isVisible()) {
-            foreach ($me->getFriends() as $friend) {
-                if ($friend['id'] == $row['reportee_id']) {
-                    $reports_about_friends[] = $r;
+    $sql .= ');';
+    $result = pg_query_params($db->getHandle(),
+        $sql,
+        $sql_vals
+    );
+    if (pg_num_rows($result)) {
+        while ($row = pg_fetch_assoc($result)) {
+            $r = new PATIncident($row);
+            $r->setReader($me);
+            if ($r->isVisible()) {
+                foreach ($me->getFriends() as $friend) {
+                    if ($friend['id'] == $row['reportee_id']) {
+                        $reports_about_friends[] = $r;
+                    }
                 }
             }
         }
