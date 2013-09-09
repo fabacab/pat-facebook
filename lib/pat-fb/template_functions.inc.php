@@ -81,6 +81,6 @@ function reportList ($reports) {
 function reportListItem ($report) {
     $title = ($report->report_title) ? $report->report_title : 'untitled report';
 ?>
-        <li><img alt="" src="https://graph.facebook.com/<?php print he($report->reportee_id);?>/picture" /><a rel="bookmark" href="<?php print he("{$_SERVER['PHP_SELF']}?action=lookup&id={$report->id}");?>">View "<span class="pat-report-title"><?php print he($title);?></span>", filed on <?php print he(date('F j, Y', strtotime($report->report_date)));?></a>.</li>
+        <li><img alt="" src="https://graph.facebook.com/<?php print he($report->reportee_id);?>/picture" /><a rel="bookmark" href="<?php print he(AppInfo::getUrl('/reports.php') . "?action=lookup&id={$report->id}");?>">View "<span class="pat-report-title"><?php print he($title);?></span>", filed on <?php print he(date('F j, Y', strtotime($report->report_date)));?></a>.</li>
 <?php
 }
