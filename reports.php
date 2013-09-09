@@ -41,8 +41,6 @@ if (is_numeric($reportee_id)) {
 
 // Offer a tab separated values download of the user's own reports.
 if ('export' === $_GET['action']) {
-    $db = new PATFacebookDatabase();
-    $db->connect(psqlConnectionStringFromDatabaseUrl());
     // Learn column placements to strip incident ID, ensure only own reports are exported.
     $result = pg_query_params($db->getHandle(),
         'SELECT column_name FROM information_schema.columns WHERE table_name=$1',

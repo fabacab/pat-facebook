@@ -1,6 +1,4 @@
 <?php
-$db = new PATFacebookDatabase();
-$db->connect(psqlConnectionStringFromDatabaseUrl());
 $reports_found = array();
 if (is_numeric($_GET['id'])) {
     $report = new PATIncident(array('id' => $_GET['id']));

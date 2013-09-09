@@ -1,7 +1,5 @@
 <?php
 // Initialize.
-$db = new PATFacebookDatabase();
-$db->connect(psqlConnectionStringFromDatabaseUrl());
 $reports_about_friends = array();
 $reports_about_reported = array();
 
