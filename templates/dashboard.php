@@ -62,8 +62,8 @@ if (pg_num_rows($result)) {
         </li>
 -->
         <li>
-            <a href="reports.php?action=lookup" class="icon websites">Find reports</a>
-            <p>Search for reports, or <a href="reports.php?action=lookup&amp;mine">view reports you filed</a>.</p>
+            <a href="reports.php?action=lookup" class="icon websites">Find stories</a>
+            <p>Search for stories, or <a href="reports.php?action=lookup&amp;mine">view stories you shared</a>.</p>
         </li>
 <!--
         <li>
@@ -75,8 +75,8 @@ if (pg_num_rows($result)) {
         </li>
 -->
         <li>
-            <a href="reports.php?action=new" class="icon apps-on-facebook">File report</a>
-            <p>File a report about another Facebook user's behavior.</p>
+            <a href="reports.php?action=new" class="icon apps-on-facebook">Share a story</a>
+            <p>Share a story about another Facebook user's behavior.</p>
         </li>
     </ul>
 </section>
@@ -85,7 +85,7 @@ if (pg_num_rows($result)) {
     <h1>Information from within your network</h1>
 
     <div class="list">
-        <h3>Reports filed by others about people you've reported</h3>
+        <h3>Stories shared by others about people you've shared about</h3>
         <?php if ($reports_about_reported) { ?>
         <ul class="friends">
         <?php
@@ -101,7 +101,7 @@ if (pg_num_rows($result)) {
     </div>
 
     <div class="list">
-        <h3>Reports filed about your Facebook friends</h3>
+        <h3>Stories shared about your Facebook friends</h3>
         <?php if ($reports_about_friends) { ?>
         <ul class="friends">
         <?php

@@ -94,36 +94,36 @@ if (isset($_GET['who'])) {
 }
 ?>
 <section id="MainContent">
-    <h1>Find a report</h1>
+    <h1>Find a story</h1>
     <nav>
         <ul class="SectionNavigation">
-            <li<?php if (isset($_GET['mine'])) : ?> class="active"<?php endif;?>><a href="<?php print $_SERVER['PHP_SELF'];?>?action=lookup&amp;mine">View reports I filed</a></li>
-            <li><a href="<?php print $_SERVER['PHP_SELF'];?>?action=export&amp;header">Download reports I filed</a></li>
+            <li<?php if (isset($_GET['mine'])) : ?> class="active"<?php endif;?>><a href="<?php print $_SERVER['PHP_SELF'];?>?action=lookup&amp;mine">View stories I shared</a></li>
+            <li><a href="<?php print $_SERVER['PHP_SELF'];?>?action=export&amp;header">Download stories I shared</a></li>
         </ul>
     </nav>
     <?php if ($reports_found && is_numeric($_GET['id'])) : ?>
     <div class="Alert">
-        <p><strong>There have been additional incidents reported about this individual.</strong></p>
+        <p><strong>There have been additional stories shared about this individual.</strong></p>
         <?php reportList($reports_found);?>
     </div>
     <?php endif;?>
     <?php if ($reports_found && isset($_GET['mine'])) { ?>
-    <p>Your reports:</p><?php reportList($reports_found);?>
+    <p>Your stories:</p><?php reportList($reports_found);?>
     <?php } else if ($reports_found && is_numeric($_REQUEST['reportee_id'])) { ?>
-    <p>The following reports have been found:</p><?php reportList($reports_found);?>
+    <p>The following stories have been found:</p><?php reportList($reports_found);?>
     <?php } else if ($report && $reportee) { ?>
     <p>
         <?php if ($report->reporter_id === $user_id) { ?>
         You
         <? } else if (!isset($_GET['who'])) { ?>
-        <a href="<?php print he("{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}&who")?>" title="Learn who filed this report.">Someone else</a>
+        <a href="<?php print he("{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}&who")?>" title="Learn who shared this story.">Someone else</a>
         <?php } else if ($reporter) { ?>
         <a href="<?php print he($reporter['link']);?>" target="_top"><img alt="" src="<?php print he($reporter['picture']['data']['url']);?>" /> <?php print he($reporter['name']);?></a>
         <?php if ($reporter['email']) : ?>(<a href="mailto:<?php print he($reporter['email']);?>">Send <?php print he($reporter['name']);?> an email about this incident</a>.)<?php endif;?>
         <?php } else { ?>
         The person who
         <?php } ?>
-        filed this report<?php if ($reporter_notified) : ?> has been notified of your interest. If they choose to do so, they'll send you a Facebook message. (You may want to double-check <a href="https://www.facebook.com/messages/other/">your "Other" mailbox</a> occasionally to ensure you don't miss their message.)<?php endif;?>.
+        shared this story<?php if ($reporter_notified) : ?> has been notified of your interest. If they choose to do so, they'll send you a Facebook message. (You may want to double-check <a href="https://www.facebook.com/messages/other/">your "Other" mailbox</a> occasionally to ensure you don't miss their message.)<?php endif;?>.
     </p>
     <article id="pat-report-info">
         <h1><?php print he($report->report_title);?></h1>
@@ -143,7 +143,7 @@ if (isset($_GET['who'])) {
                 ?>.
             </li>
             <li>
-                Report is visible to
+                Story is visible to
                 <?php
                 switch ($report->report_visibility) {
                     case 'public':
@@ -153,38 +153,38 @@ if (isset($_GET['who'])) {
                         print 'your friends only';
                         break;
                     case 'reporters':
-                        print 'others who filed a report about the same person';
+                        print 'others who shared a story about the same person';
                         break;
                     case 'reporter_friends':
-                        print 'other friends of yours who also filed a report about the same person';
+                        print 'other friends of yours who also shared a story about the same person';
                         break;
                 }
                 ?>.
             </li>
         </ul>
         <?php endif;?>
-        <p>This report is about: <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a>:</p>
+        <p>This story is about: <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a>:</p>
         <blockquote><p><?php print he($report->report_text);?></p></blockquote>
     </article>
     <?php if ($requester) : ?>
-    <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know that you wrote this report. If you feel comfortable doing so, you can <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>" target="_top">click here to send them a message</a>.</p>
+    <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know that you shared this story. If you feel comfortable doing so, you can <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>" target="_top">click here to send them a message</a>.</p>
     <?php endif; ?>
     <?php } else if ($_REQUEST['submit'] && empty($_REQUEST['reportee_id'])) { ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
-        <?php clarifyReportee($search_results, array('description' => "Please clarify who you're trying to find reports about."));?>
+        <?php clarifyReportee($search_results, array('description' => "Please clarify who you're trying to find stories about."));?>
     </form>
     <?php } else if ($_REQUEST['submit']) { ?>
-    <p>No report matching this description could be found. Maybe you want to <a href="<?php print he(AppInfo::getUrl('/reports.php?action=new'));?>">file one</a>?</p>
+    <p>No story matching this description could be found. Maybe you want to <a href="<?php print he(AppInfo::getUrl('/reports.php?action=new'));?>">share one</a>?</p>
     <?php } ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
-        <p>Search for a report.</p>
+        <p>Search for a story.</p>
         <fieldset><legend>Reportee details</legend>
             <?php
             reporteeNameField(array(
-                'label' => 'I want to know if there are any visible reports about',
-                'description_html' => 'Enter the name of the person you\'d like to find reports about. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.)'
+                'label' => 'I want to know if there are any visible stories about',
+                'description_html' => 'Enter the name of the person you\'d like to find stories about. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.)'
             ));?>
         </fieldset>
-        <input type="submit" name="submit" value="Find reports" />
+        <input type="submit" name="submit" value="Find stories" />
     </form>
 </section>

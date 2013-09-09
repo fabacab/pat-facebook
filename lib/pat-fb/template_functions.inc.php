@@ -74,13 +74,13 @@ function reportList ($reports) {
     }
     ?>
     </ol>
-    <p class="pat-reports description">(In the list above, reports you've recently viewed look like <a href="/" rel="bookmark">this</a>. Reports you haven't yet viewed look like <a href="http://not-actually-a-real-place-to-visit.example/" rel="bookmark">this</a>.)</p>
+    <p class="pat-reports description">(In the list above, stories you've recently viewed look like <a href="/" rel="bookmark">this</a>. Stories you haven't yet viewed look like <a href="http://not-actually-a-real-place-to-visit.example/" rel="bookmark">this</a>.)</p>
 <?php
 }
 
 function reportListItem ($report) {
-    $title = ($report->report_title) ? $report->report_title : 'untitled report';
+    $title = ($report->report_title) ? $report->report_title : 'untitled story';
 ?>
-        <li><img alt="" src="https://graph.facebook.com/<?php print he($report->reportee_id);?>/picture" /><a rel="bookmark" href="<?php print he(AppInfo::getUrl('/reports.php') . "?action=lookup&id={$report->id}");?>">View "<span class="pat-report-title"><?php print he($title);?></span>", filed on <?php print he(date('F j, Y', strtotime($report->report_date)));?></a>.</li>
+        <li><img alt="" src="https://graph.facebook.com/<?php print he($report->reportee_id);?>/picture" /><a rel="bookmark" href="<?php print he(AppInfo::getUrl('/reports.php') . "?action=lookup&id={$report->id}");?>">View "<span class="pat-report-title"><?php print he($title);?></span>", shared on <?php print he(date('F j, Y', strtotime($report->report_date)));?></a>.</li>
 <?php
 }
