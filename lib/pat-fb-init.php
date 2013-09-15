@@ -1,4 +1,9 @@
 <?php
+// Uncomment to enable debug logging locally.
+//ini_set('error_log', '/tmp/php_errors.log');
+// Some global settings.
+date_default_timezone_set('UTC');
+
 // Provides access to app specific values such as your app id and app secret.
 // Defined in 'AppInfo.php'
 require_once(dirname(__FILE__) . '/../AppInfo.php');
@@ -23,7 +28,7 @@ require 'pat-fb/template_functions.inc.php';
 $FB = new Facebook(array(
   'appId'  => AppInfo::appID(),
   'secret' => AppInfo::appSecret(),
-  'sharedSession' => true,
+//  'sharedSession' => true, // Was this causing a bug? https://github.com/meitar/pat-facebook/issues/3
   'trustForwarded' => true,
 ));
 $user_id = $FB->getUser();
@@ -34,6 +39,8 @@ if ($user_id) {
         $me = new PATFacebookUser($FB);
         $me->loadFriends('id,name,gender,picture.type(square),bio,installed');
     } catch (FacebookApiException $e) {
+        error_log('Failed to set global variable $me.');
+        error_log(serialize($e));
         // If the call fails we check if we still have a user. The user will be
         // cleared if the error is because of an invalid accesstoken
         if (!$FB->getAccessToken()) {
@@ -47,6 +54,3 @@ if ($user_id) {
 $FBApp = new AppInfo($FB->api('/' . AppInfo::appID()));
 $db = new PATFacebookDatabase();
 $db->connect(psqlConnectionStringFromDatabaseUrl());
-
-// Some global settings.
-date_default_timezone_set('UTC');
