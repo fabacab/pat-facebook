@@ -39,20 +39,7 @@ if (is_numeric($_GET['id'])) {
         }
     }
 } else if (is_numeric($_REQUEST['reportee_id'])) {
-    // Search for reports about this person.
-    $result = pg_query_params($db->getHandle(),
-        'SELECT * FROM incidents WHERE reportee_id=$1',
-        array($_REQUEST['reportee_id'])
-    );
-    if (pg_num_rows($result)) {
-        while ($row = pg_fetch_assoc($result)) {
-            $r = new PATIncident($row);
-            $r->setReader($me);
-            if ($r->isVisible()) {
-                $reports_found[] = $r;
-            }
-        }
-    }
+    $reports_found = findReportsByReporteeId($_REQUEST['reportee_id']);
 }
 if (is_numeric($_GET['requester'])) {
     try {

@@ -33,3 +33,23 @@ function getFacebookAppToken () {
     list(, $token) = explode('=', $res);
     return $token;
 }
+
+function findReportsByReporteeId ($id) {
+    global $me, $db;
+    $reports_found = array();
+    // Search for reports about this person.
+    $result = pg_query_params($db->getHandle(),
+        'SELECT * FROM incidents WHERE reportee_id=$1',
+        array($id)
+    );
+    if (pg_num_rows($result)) {
+        while ($row = pg_fetch_assoc($result)) {
+            $r = new PATIncident($row);
+            $r->setReader($me);
+            if ($r->isVisible()) {
+                $reports_found[] = $r;
+            }
+        }
+    }
+    return $reports_found;
+}
