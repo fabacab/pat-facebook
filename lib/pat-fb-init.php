@@ -38,7 +38,8 @@ if ($user_id) {
         // Fetch the viewer's basic information
         $me = new PATFacebookUser($FB);
         $me->loadFriends('id,name,gender,picture.type(square),bio,installed');
-        date_default_timezone_set($me->getPreferences()['user_timezone_name']);
+        $my_prefs = $me->getPreferences();
+        date_default_timezone_set($my_prefs['user_timezone_name']);
     } catch (FacebookApiException $e) {
         error_log('Failed to set global variable $me.');
         error_log(serialize($e));
