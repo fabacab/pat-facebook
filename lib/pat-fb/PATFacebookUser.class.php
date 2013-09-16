@@ -26,7 +26,8 @@ class PATFacebookUser extends FacebookEntity {
      * CREATE TABLE user_preferences (
      *   fbid                      BIGINT NOT NULL PRIMARY KEY,
      *   notify_on_same_reportee   BOOLEAN NOT NULL DEFAULT TRUE,
-     *   notify_on_friend_reported BOOLEAN NOT NULL DEFAULT TRUE
+     *   notify_on_friend_reported BOOLEAN NOT NULL DEFAULT TRUE,
+     *   user_timezone_name        VARCHAR(50) NOT NULL DEFAULT 'UTC'
      * );
      */
     private function loadPreferences () {
@@ -43,6 +44,9 @@ class PATFacebookUser extends FacebookEntity {
                     case 'notify_on_friend_reported':
                         $ret[$k] = ('t' === $v) ? true : false;
                     break;
+                    default:
+                        $ret[$k] = $v;
+                    break;
                 }
             }
             return $ret;
@@ -54,11 +58,12 @@ class PATFacebookUser extends FacebookEntity {
     public function savePreferences ($new_prefs) {
         if (!is_array($new_prefs)) { return false; }
         return pg_query_params($this->db->getHandle(),
-            'UPDATE user_preferences SET notify_on_same_reportee=$1, notify_on_friend_reported=$2 WHERE fbid=$3',
+            'UPDATE user_preferences SET notify_on_same_reportee=$1, notify_on_friend_reported=$2, user_timezone_name=$3 WHERE fbid=$4',
             array(
                 // Manually convert booleans the way Postgres expects.
                 ($new_prefs['notify_on_same_reportee']) ? 't': 'f',
                 ($new_prefs['notify_on_friend_reported']) ? 't' : 'f',
+                $new_prefs['user_timezone_name'],
                 $this->getId()
             )
         );
