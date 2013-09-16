@@ -1,11 +1,11 @@
 <?php
 require_once 'lib/pat-fb-init.php';
 
-try {
-    $prefs = $me->getPreferences();
-} catch (Exception $e) {
-    header('Location: ' . AppInfo::getUrl());
+if (!$me) {
+    header('Location: ' . AppInfo::getUrl($_SERVER['REQUEST_URI']));
+    exit();
 }
+$prefs = $me->getPreferences();
 
 if ($_REQUEST['submit']) {
     $new_prefs = array(
