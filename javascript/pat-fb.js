@@ -97,21 +97,28 @@ PAT_Facebook.UI.handleReporteeSearch = function (response) {
         if (console && console.log) {
             console.log(response.error);
         }
+        $.event.trigger({
+            'type': 'searchResultsError',
+            'message': response.error.message
+        });
         return false;
-    }
-    if (response.data) { // multiple results
-        PAT_Facebook.addSearchResults(response.data);
     }
     if (response.id) { // only one result, so coerce
         var results = [];
         results[0] = response;
         PAT_Facebook.addSearchResults(results);
     }
+    if (response.data && response.data.length > 0) { // multiple results
+        PAT_Facebook.addSearchResults(response.data);
+    } else if (response.data && response.data.length == 0) { // zero results
+        $.event.trigger({
+            'type': 'searchResultsError',
+            'message': 'Your search returned no results.'
+        });
+    }
 };
 PAT_Facebook.UI.displayReporteeSearch = function (e) {
-    $('label .fetch-progress').remove();
-    var el = document.getElementById('disambiguate-reportee-container');
-    el.removeAttribute('style'); // re-style to make visible
+    var el = PAT_Facebook.UI.resetReporteeContainer();
     // Dynamically create or add to a list of clickable options.
     var list = document.querySelector('#disambiguate-reportee-container ul') || document.createElement('ul');
     list.setAttribute('id', 'disambiguate-reportee');
@@ -153,6 +160,26 @@ PAT_Facebook.UI.displayReporteeSearch = function (e) {
     el.innerHTML = '<p>Which "' + document.getElementById('reportee_name').value + '" did you mean?</p>';
     el.appendChild(list);
 };
+PAT_Facebook.UI.displayReporteeSearchError = function (e) {
+    var el = PAT_Facebook.UI.resetReporteeContainer();
+    var x = document.createElement('button');
+    x.innerHTML = 'Okay';
+    x.addEventListener('click', function (e) {
+        e.preventDefault();
+        el.setAttribute('style', 'display: none;');
+        document.getElementById('reportee_name').focus();
+    });
+    var html = '<p>There was an error running your search.</p>';
+    html += '<blockquote><p>' + e.message + '</p></blockquote>';
+    el.innerHTML = html;
+    el.appendChild(x);
+};
+PAT_Facebook.UI.resetReporteeContainer = function () {
+    $('label .fetch-progress').remove();
+    var el = document.getElementById('disambiguate-reportee-container');
+    el.removeAttribute('style'); // re-style to make visible
+    return el;
+};
 PAT_Facebook.init = function () {
     // Prepare DOM for event handlers.
     if (document.getElementById('reportee_name')) {
@@ -161,6 +188,7 @@ PAT_Facebook.init = function () {
         el.setAttribute('style', 'display: none;');
         $('#reportee_name').closest('form')[0].appendChild(el);
         $(el).on('searchResultsAdded', PAT_Facebook.UI.displayReporteeSearch);
+        $(el).on('searchResultsError', PAT_Facebook.UI.displayReporteeSearchError);
     }
 }
 window.addEventListener('DOMContentLoaded', PAT_Facebook.init);
