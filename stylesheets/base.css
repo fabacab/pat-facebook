@@ -323,30 +323,19 @@ footer .GlobalNavigation li:last-child::after {
     text-align: center;
 }
 
-#samples ul {
-  background: url("../images/picture-sketch.png") 4px 8px;
-  background-repeat: repeat-y;
-  overflow: hidden;
-  padding-top: 8px;
-}
-
 #samples li {
-  background-repeat: no-repeat;
-  background-position: 0 0;
   color: #7c7c7c;
   display: block;
   font-size: 11px;
   font-weight: bold;
-  height: 32px;
+  min-height: 32px;
   margin-bottom: 11px;
-  overflow: hidden;
   position: relative;
 }
 
 #samples li a:link,
 #samples li a:visited {
   color: #7c7c7c;
-  display: block;
   line-height: 32px;
   padding-left: 36px;
 }
