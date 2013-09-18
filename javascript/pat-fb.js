@@ -59,6 +59,7 @@
         });
 
         $('#reportee_name').change(function() {
+          PAT_Facebook.search_results = [];
           $('#reportee_name').after('<span class="fetch-progress">(loading&hellip;)</span>');
           if (isNumeric(this.value) || (-1 == this.value.indexOf(' '))) {
               FB.api(
@@ -111,10 +112,12 @@ PAT_Facebook.UI.handleReporteeSearch = function (response) {
     if (response.data && response.data.length > 0) { // multiple results
         PAT_Facebook.addSearchResults(response.data);
     } else if (response.data && response.data.length == 0) { // zero results
-        $.event.trigger({
-            'type': 'searchResultsError',
-            'message': 'Your search returned no results.'
-        });
+        if (PAT_Facebook.search_results.length == 0) {
+            $.event.trigger({
+                'type': 'searchResultsError',
+                'message': 'Your search returned no results.'
+            });
+        }
     }
 };
 PAT_Facebook.UI.displayReporteeSearch = function (e) {
