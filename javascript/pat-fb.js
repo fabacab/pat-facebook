@@ -62,20 +62,21 @@
           PAT_Facebook.search_results = [];
           $('#reportee_name').after('<span class="fetch-progress">(loading&hellip;)</span>');
           if (isNumeric(this.value) || (-1 == this.value.indexOf(' '))) {
-              FB.api(
+              PAT_Facebook.api(
                   '/' + encodeURIComponent(this.value) + '?fields=id,name,picture.type(square),gender,bio,link',
-                  PAT_Facebook.UI.handleReporteeSearch
+                  PAT_Facebook.UI.handleReporteeSearch, this.value
               );
           }
-          FB.api(
+          PAT_Facebook.api(
               '/search?type=user&fields=id,name,picture.type(square),gender,bio,birthday,link&q=' + encodeURIComponent(this.value),
-              PAT_Facebook.UI.handleReporteeSearch
+              PAT_Facebook.UI.handleReporteeSearch, this.value
           );
+          // If there's a space, assume a legal name, so remove the spaces to attempt conversion to a username.
           if (-1 != this.value.indexOf(' ')) {
               var username = this.value.replace(' ', '');
-              FB.api(
+              PAT_Facebook.api(
                   '/' + encodeURIComponent(username) + '?fields=id,name,picture.type(square),gender,bio,link',
-                  PAT_Facebook.UI.handleReporteeSearch
+                  PAT_Facebook.UI.handleReporteeSearch, this.value
               );
           }
         });
@@ -92,9 +93,29 @@ PAT_Facebook.addSearchResults = function (results) {
         'results': results
     });
 }
+// Wrapper for FB.api that accepts additional parameters.
+PAT_Facebook.api = function () {
+    var cbf = arguments[1]; // callback function
+    var args = arguments[2];
+    FB.api(arguments[0], function (response) {
+        cbf(response, args);
+    });
+};
 PAT_Facebook.UI = {};
-PAT_Facebook.UI.handleReporteeSearch = function (response) {
-    if (response.error) {
+PAT_Facebook.UI.handleReporteeSearch = function (response, search_str) {
+    if (response.error && (isNumeric(search_str) || -1 == search_str.indexOf(' '))) {
+        // If we got an error on a single entity lookup, assume we were blocked, so try again sans API.
+        $.ajax({
+            'type': 'GET',
+            'url': 'https://graph.facebook.com/' + search_str,
+            'error': function () {
+                $.event.trigger({
+                    'type': 'searchResultsError',
+                    'message': 'Failed to find Facebook entity "' + search_str + '" which may simply mean it does not exist.'
+                });
+            }
+        }).done(PAT_Facebook.UI.handleReporteeSearch);
+    } else if (response.error) {
         if (console && console.log) {
             console.log(response.error);
         }

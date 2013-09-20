@@ -7,17 +7,22 @@ if (is_numeric($reportee_id)) {
     try {
         $reportee_data = $FB->api("/$reportee_id");
     } catch (Exception $e) {
-        // TODO: Figure out why I can't seem to catch this error if the $reportee_id
-        //       is a user who the current user has blocked.
-        // If the user we're looking up was blocked, we should get an Exception.
-        // In that case, ask the user to triple-check that this is the correct
-        // user ID number for the user they wish to report.
+        // Assume this user has blocked us, so try again sans API.
+        if ($e->getType() === 'GraphMethodException') {
+            $reportee_data = json_decode(file_get_contents("https://graph.facebook.com/$reportee_id"), true);
+        }
     }
 } else if (empty($reportee_id) && !empty($_REQUEST['reportee_name'])) {
     // If the "name" is numeric or doesn't have spaces, assume it's an ID or an
     // unique username, so do that search first.
     if (is_numeric($_REQUEST['reportee_name']) || (false === strpos($_REQUEST['reportee_name'], ' '))) {
-        $search_results[] = $FB->api("/{$_REQUEST['reportee_name']}");
+        try {
+            $search_results[] = $FB->api("/{$_REQUEST['reportee_name']}");
+        } catch (FacebookApiException $e) {
+            if ($e->getType() === 'GraphMethodException') {
+                $search_results[] = json_decode(file_get_contents("https://graph.facebook.com/{$_REQUEST['reportee_name']}"), true);
+            }
+        }
     }
     // But then always do a Graph Search, too.
     $x = $FB->api(
