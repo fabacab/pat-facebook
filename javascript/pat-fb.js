@@ -60,7 +60,7 @@
 
         $('#reportee_name').change(function() {
           PAT_Facebook.search_results = [];
-          $('#reportee_name').after('<span class="fetch-progress">(loading&hellip;)</span>');
+          PAT_Facebook.UI.showLoadingIndicator(this);
           if (isNumeric(this.value) || (-1 == this.value.indexOf(' '))) {
               PAT_Facebook.api(
                   '/' + encodeURIComponent(this.value) + '?fields=id,name,picture.type(square),gender,bio,link',
@@ -140,6 +140,13 @@ PAT_Facebook.UI.handleReporteeSearch = function (response, search_str) {
             });
         }
     }
+
+    if (response.paging) {
+        $.event.trigger({
+            'type': 'searchResultsMore',
+            'next': response.paging.next
+        });
+    }
 };
 PAT_Facebook.UI.displayReporteeSearch = function (e) {
     var el = PAT_Facebook.UI.resetReporteeContainer();
@@ -184,6 +191,17 @@ PAT_Facebook.UI.displayReporteeSearch = function (e) {
     el.innerHTML = '<p>Which "' + document.getElementById('reportee_name').value + '" did you mean?</p>';
     el.appendChild(list);
 };
+PAT_Facebook.UI.displayReporteeSearchPager = function (e) {
+    var url = e.next;
+    var x = document.createElement('button');
+    x.innerHTML = 'Show more search results&hellip;';
+    x.addEventListener('click', function (e) {
+        FB.api(url, PAT_Facebook.UI.handleReporteeSearch);
+        PAT_Facebook.UI.showLoadingIndicator(x);
+        e.target.parentNode.removeChild(e.target);
+    });
+    document.getElementById('disambiguate-reportee').parentNode.appendChild(x);
+};
 PAT_Facebook.UI.displayReporteeSearchError = function (e) {
     var el = PAT_Facebook.UI.resetReporteeContainer();
     var x = document.createElement('button');
@@ -204,6 +222,9 @@ PAT_Facebook.UI.resetReporteeContainer = function () {
     el.removeAttribute('style'); // re-style to make visible
     return el;
 };
+PAT_Facebook.UI.showLoadingIndicator = function (el) {
+    $(el).after('<span class="fetch-progress">(loading&hellip;)</span>');
+};
 PAT_Facebook.init = function () {
     // Prepare DOM for event handlers.
     if (document.getElementById('reportee_name')) {
@@ -213,6 +234,7 @@ PAT_Facebook.init = function () {
         $('#reportee_name').closest('fieldset')[0].appendChild(el);
         $(el).on('searchResultsAdded', PAT_Facebook.UI.displayReporteeSearch);
         $(el).on('searchResultsError', PAT_Facebook.UI.displayReporteeSearchError);
+        $(el).on('searchResultsMore', PAT_Facebook.UI.displayReporteeSearchPager);
     }
 }
 window.addEventListener('DOMContentLoaded', PAT_Facebook.init);
