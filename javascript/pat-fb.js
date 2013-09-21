@@ -210,7 +210,7 @@ PAT_Facebook.init = function () {
         var el = document.createElement('div');
         el.setAttribute('id', 'disambiguate-reportee-container');
         el.setAttribute('style', 'display: none;');
-        $('#reportee_name').closest('form')[0].appendChild(el);
+        $('#reportee_name').closest('fieldset')[0].appendChild(el);
         $(el).on('searchResultsAdded', PAT_Facebook.UI.displayReporteeSearch);
         $(el).on('searchResultsError', PAT_Facebook.UI.displayReporteeSearchError);
     }

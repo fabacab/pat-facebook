@@ -439,9 +439,6 @@ label {
 form em {
     font-style: italic;
 }
-#pat-report-form {
-    position: relative;
-}
 legend {
     float: right;
     border-top: 1px solid;
@@ -451,6 +448,7 @@ fieldset {
     margin: 20px 25px 0 0;
     border: 1px solid;
     border-width: 0 1px 1px 0;
+    position: relative;
 }
 label {
     clear: both;
@@ -476,10 +474,15 @@ input[type="submit"] {
 
 #disambiguate-reportee-container {
     position: absolute;
-    top: 10em;
+    top: 5em;
     border: 1px solid gray;
     padding: 30px;
     background: #FFF;
+    opacity: .8;
+    transition: opacity .25s ease-in-out;
+}
+#disambiguate-reportee-container:hover {
+    opacity: 1;
 }
 #disambiguate-reportee li {
     padding: 1px;
