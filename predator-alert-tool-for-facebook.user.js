@@ -24,7 +24,6 @@
 // @grant          GM_addStyle
 // @grant          GM_setValue
 // @grant          GM_getValue
-// @grant          GM_openInTab
 // ==/UserScript==
 PAT_FB = {};
 PAT_FB.CONFIG = {
@@ -42,6 +41,7 @@ PAT_FB.log = function (msg) {
 GM_addStyle('\
 .has-predator-alert-tool-reports { border: 5px solid red; }\
 ');
+
 PAT_FB.init = function () {
     // We need to capture the session cookies from the PAT-FB server, so if we
     // loaded the server's pages, save the cookies locally for later use.
@@ -56,6 +56,27 @@ PAT_FB.init = function () {
                 for (var i = 0; i < mutation.addedNodes.length; i++) {
                     // Skip text nodes.
                     if (mutation.addedNodes[i].nodeType == Node.TEXT_NODE) { continue; }
+
+                    // If the new node is a hovercard
+                    var ownerid = mutation.addedNodes[i].getAttribute('data-ownerid');
+                    var num_pat;
+                    // and this hovercard has any PAT data, grab that data
+                    if (ownerid && (num_pat = document.getElementById(ownerid).getAttribute('data-num-pat-reports'))) {
+                        // and insert it into the hovercard HTML.
+                        var a = document.createElement('a');
+                        a.setAttribute('href',
+                            PAT_FB.parseApiUrl().protocol + '//' + PAT_FB.parseApiUrl().host
+                            + '/reports.php?action=lookup&reportee_id='
+                            + document.getElementById(ownerid).getAttribute('data-pat-reportee-id')
+                        );
+                        a.setAttribute('class', 'pat-reports-link');
+                        a.innerHTML = 'View ' + num_pat + ' PAT-FB stories';
+                        // Don't append a duplicate link if we're re-processing this node.
+                        // TODO: Uhm, yeah, why don't we just not re-process it multiple times?
+                        if (!mutation.addedNodes[i].querySelector('.pat-reports-link')) {
+                            mutation.addedNodes[i].querySelectorAll('table td')[1].appendChild(a);
+                        }
+                    }
                     // Process all the rest.
                     PAT_FB.main(mutation.addedNodes[i]);
                 }
@@ -74,10 +95,7 @@ window.addEventListener('DOMContentLoaded', PAT_FB.init);
 // main() is given a start node (HTML tree) and processes appropriately.
 PAT_FB.main = function (node) {
     PAT_FB.log('Starting main() on page ' + unsafeWindow.location.toString());
-    PAT_FB.processElements(node.querySelectorAll('[data-hovercard]'));
-};
-
-PAT_FB.processElements = function (els) {
+    var els = node.querySelectorAll('[data-hovercard]');
     for (var i = 0; i < els.length; i++) {
         var fbid = els[i].getAttribute('data-hovercard').match(/id=(\d+)/)[1];
         PAT_FB.log('Found Facebook ID ' + fbid + '.');
@@ -118,6 +136,9 @@ PAT_FB.maybeFlagEntity = function (fbid, el) {
                 PAT_FB.log('Parsed response from PAT-FB for ' + fbid.toString() + ': ' + response.responseText);
                 if (resp.reports) {
                     el.setAttribute('class', el.getAttribute('class') + ' has-predator-alert-tool-reports');
+                    // Store data in the element.
+                    el.setAttribute('data-num-pat-reports', resp.reports.toString());
+                    el.setAttribute('data-pat-reportee-id', resp.reportee_id.toString());
                 }
             } catch (e) {
                 PAT_FB.log('Caught error from reply: ' + response.responseText);
