@@ -39,7 +39,6 @@ PAT_FB.log = function (msg) {
 
 // Initializations.
 GM_addStyle('\
-.has-predator-alert-tool-reports { border: 5px solid red; }\
 ');
 
 PAT_FB.init = function () {
@@ -134,15 +133,25 @@ PAT_FB.maybeFlagEntity = function (fbid, el) {
             try {
                 resp = JSON.parse(response.responseText);
                 PAT_FB.log('Parsed response from PAT-FB for ' + fbid.toString() + ': ' + response.responseText);
-                if (resp.reports) {
-                    el.setAttribute('class', el.getAttribute('class') + ' has-predator-alert-tool-reports');
-                    // Store data in the element.
-                    el.setAttribute('data-num-pat-reports', resp.reports.toString());
-                    el.setAttribute('data-pat-reportee-id', resp.reportee_id.toString());
-                }
             } catch (e) {
                 PAT_FB.log('Caught error from reply: ' + response.responseText);
+                return;
+            }
+            if (resp.reports) {
+                el.style.border = PAT_FB.setBorderWidthByReportCount(resp.reports).toString() + 'px solid red';
+                // Store data in the element.
+                el.setAttribute('data-num-pat-reports', resp.reports.toString());
+                el.setAttribute('data-pat-reportee-id', resp.reportee_id.toString());
             }
         }
     });
+};
+
+PAT_FB.setBorderWidthByReportCount = function (n) {
+    if (n < 2) {
+        n = 1;
+    } else if (n > 4) {
+        n = 5;
+    }
+    return n;
 };
