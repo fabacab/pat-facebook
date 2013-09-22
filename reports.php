@@ -3,6 +3,20 @@ require_once 'lib/pat-fb-init.php';
 
 $reportee_id = ($_REQUEST['reportee_id']) ? $_REQUEST['reportee_id'] : '';
 $search_results = array();
+// TODO: All these forms should start implementing CSRF protections?
+if ($_REQUEST['submit_clarification'] && $_REQUEST['next_page']) {
+    // Remove the reportee_id value if user selected one but clicked "show more".
+    if ('Show more' === substr($_REQUEST['submit_clarification'], 0, 9)) {
+        unset($reportee_id);
+    }
+    // We're in the middle of paging, and just asked for another page.
+    $p = parse_url($_REQUEST['next_page']);
+    $url = "{$p['path']}?{$p['query']}";
+    $x = processFacebookSearchResults($FB->api(urldecode($url)));
+    $search_results = $x['search_results'];
+    $next_search_results_url = $x['next_page'];
+}
+
 if (is_numeric($reportee_id)) {
     try {
         $reportee_data = $FB->api("/$reportee_id");
@@ -12,7 +26,7 @@ if (is_numeric($reportee_id)) {
             $reportee_data = json_decode(file_get_contents("https://graph.facebook.com/$reportee_id"), true);
         }
     }
-} else if (empty($reportee_id) && !empty($_REQUEST['reportee_name'])) {
+} else if (empty($reportee_id) && !empty($_REQUEST['reportee_name']) && empty($_REQUEST['submit_clarification'])) {
     // If the "name" is numeric or doesn't have spaces, assume it's an ID or an
     // unique username, so do that search first.
     if (is_numeric($_REQUEST['reportee_name']) || (false === strpos($_REQUEST['reportee_name'], ' '))) {
@@ -25,16 +39,13 @@ if (is_numeric($reportee_id)) {
         }
     }
     // But then always do a Graph Search, too.
-    $x = $FB->api(
+    $x = processFacebookSearchResults($FB->api(
         '/search?type=user&q=' . urlencode($_REQUEST['reportee_name']) .
-        '&fields=id,name,picture.type(square),gender,bio,birthday,link' .
-        '&limit=200' // TODO: Customize or paginate this.
-    );
-    if ($x['data']) {
-        foreach ($x['data'] as $result) {
-            array_push($search_results, $result);
-        }
-    } else if (false !== strpos($_REQUEST['reportee_name'], ' ')) {
+        '&fields=id,name,picture.type(square),gender,bio,birthday,link'
+    ));
+    $search_results = array_merge($search_results, $x['search_results']);
+    $next_search_results_url = $x['next_page'];
+    if (empty($search_results) && false !== strpos($_REQUEST['reportee_name'], ' ')) {
         // If we didn't get any results, try guessing their username.
         $username = str_replace(' ', '', $_REQUEST['reportee_name']);
         $x = $FB->api("/$username");

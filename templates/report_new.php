@@ -41,7 +41,13 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
 ?>
 <section id="MainContent">
     <h1>Share a new story</h1>
-    <?php if (!isset($_REQUEST['submit']) || isset($_REQUEST['submit_clarification']) || isset($report)) { ?>
+    <?php if (
+              (!isset($_REQUEST['submit']) && !isset($_REQUEST['submit_clarification']))
+              ||
+              (isset($_REQUEST['submit_clarification']) && $reportee_id)
+              ||
+              isset($report)
+            ) { ?>
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
         <p>Share a story.</p>
         <fieldset><legend>Story details</legend>
@@ -148,14 +154,22 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
         </fieldset>
         <input type="submit" name="submit" value="Share this story" />
     </form>
-    <?php } else if (empty($_REQUEST['reportee_id'])) { ?>
+    <?php } else if (empty($reportee_id)) { ?>
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
         <input type="hidden" id="reporter_id" name="reporter_id" value="<?php print he($user_id);?>" />
+        <input type="hidden" name="reportee_name" value="<?php print he($_REQUEST['reportee_name']);?>" />
         <input type="hidden" name="report_title" value="<?php print he($_REQUEST['report_title']);?>" />
         <input type="hidden" name="report_text" value="<?php print he($_REQUEST['report_text']);?>" />
         <input type="hidden" name="communication_preference" value="<?php print he($_REQUEST['communication_preference']);?>" />
         <input type="hidden" name="report_visibility" value="<?php print he($_REQUEST['report_visibility']);?>" />
-        <?php clarifyReportee($search_results, array('description' => "Please clarify who you're sharing this story about. It's important this field is accurate, so double-check just to be sure!"));?>
+        <?php
+        clarifyReportee($search_results,
+            array(
+                'description' => "Please clarify who you're sharing this story about. It's important this field is accurate, so double-check just to be sure!",
+                'next' => $next_search_results_url
+            )
+        );
+        ?>
     </form>
     <?php } ?>
 </section>

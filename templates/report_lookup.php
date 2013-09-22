@@ -46,8 +46,8 @@ if (is_numeric($_GET['id'])) {
             }
         }
     }
-} else if (is_numeric($_REQUEST['reportee_id'])) {
-    $reports_found = findReportsByReporteeId($_REQUEST['reportee_id']);
+} else if (is_numeric($reportee_id)) {
+    $reports_found = findReportsByReporteeId($reportee_id);
 }
 if (is_numeric($_GET['requester'])) {
     try {
@@ -104,7 +104,7 @@ if (isset($_GET['who'])) {
     <?php endif;?>
     <?php if ($reports_found && isset($_GET['mine'])) { ?>
     <p>Your stories:</p><?php reportList($reports_found);?>
-    <?php } else if ($reports_found && is_numeric($_REQUEST['reportee_id'])) { ?>
+    <?php } else if ($reports_found && is_numeric($reportee_id)) { ?>
     <p>The following stories have been found:</p><?php reportList($reports_found);?>
     <?php } else if ($report && $reportee) { ?>
     <p>
@@ -164,11 +164,19 @@ if (isset($_GET['who'])) {
     <?php if ($requester) : ?>
     <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know that you shared this story. If you feel comfortable doing so, you can <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>" target="_top">click here to send them a message</a>.</p>
     <?php endif; ?>
-    <?php } else if ($_REQUEST['submit'] && empty($_REQUEST['reportee_id'])) { ?>
+    <?php } else if (($_REQUEST['submit'] || $_REQUEST['submit_clarification']) && empty($reportee_id)) { ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
-        <?php clarifyReportee($search_results, array('description' => "Please clarify who you're trying to find stories about."));?>
+        <input type="hidden" name="reportee_name" value="<?php print he($_REQUEST['reportee_name']);?>" />
+        <?php
+        clarifyReportee($search_results,
+            array(
+                'description' => "Please clarify who you're trying to find stories about.",
+                'next' => $next_search_results_url
+            )
+        );
+        ?>
     </form>
-    <?php } else if ($_REQUEST['submit']) { ?>
+    <?php } else if ($_REQUEST['submit'] || $_REQUEST['submit_clarification']) { ?>
     <p>No story matching this description could be found. Maybe you want to <a href="<?php print he(AppInfo::getUrl('/reports.php?action=new'));?>">share one</a>?</p>
     <?php } ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">

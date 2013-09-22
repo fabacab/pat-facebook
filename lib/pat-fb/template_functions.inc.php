@@ -59,6 +59,10 @@ function clarifyReportee ($search_results, $params = array()) {
             <?php endforeach;?>
         </ul>
         <input type="submit" name="submit_clarification" value="Yes, that's who I mean." />
+        <?php if ($params['next']) : ?>
+        <input type="hidden" name="next_page" value="<?php print he($params['next']);?>" />
+        <input type="submit" name="submit_clarification" value="Show more search results&hellip;" />
+        <?php endif; ?>
         <? } else { ?>
         <p>Sorry, but <?php print he($FBApp->getAppName());?> couldn't find anyone matching that description.</p>
         <input type="submit" name="no_match_found" value="Go back to search again" />

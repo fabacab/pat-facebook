@@ -53,3 +53,22 @@ function findReportsByReporteeId ($id) {
     }
     return $reports_found;
 }
+
+function processFacebookSearchResults ($response) {
+    $r = array();
+    if ($response['data']) {
+        foreach ($response['data'] as $result) {
+            array_push($r, $result);
+        }
+        if ($response['paging']) {
+            $p = parse_url($response['paging']['next']);
+            $x = array();
+            parse_str($p['query'], $x);
+            // Only set the next page if we didn't see all the results yet.
+            if ($x['limit'] <= count($response['data'])) {
+                $n = $response['paging']['next'];
+            }
+        }
+    }
+    return array('search_results' => $r, 'next_page' => $n);
+}
