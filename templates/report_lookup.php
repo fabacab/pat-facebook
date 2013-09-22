@@ -98,7 +98,10 @@ if (isset($_GET['who'])) {
     <?php if ($reports_found && isset($_GET['mine'])) { ?>
     <p>Your stories:</p><?php reportList($reports_found);?>
     <?php } else if ($reports_found && is_numeric($reportee_id)) { ?>
-    <p>The following stories have been found:</p><?php reportList($reports_found);?>
+    <p>
+        Information that has been shared about <a href="<?php print he($reportee_data['link']);?>"><?php print he($reportee_data['name']);?></a>:
+    </p>
+    <?php reportList($reports_found);?>
     <?php } else if ($report && $reportee) { ?>
     <p>
         <?php if ($report->reporter_id === $user_id) { ?>
