@@ -91,7 +91,7 @@ if (isset($_GET['who'])) {
     </nav>
     <?php if ($reports_found && is_numeric($_GET['id'])) : ?>
     <div class="Alert">
-        <p><strong>There have been additional stories shared about this individual.</strong></p>
+        <p><strong>More information about this individual:</strong></p>
         <?php reportList($reports_found);?>
     </div>
     <?php endif;?>
@@ -114,7 +114,7 @@ if (isset($_GET['who'])) {
         <?php } else { ?>
         The person who
         <?php } ?>
-        shared this story<?php if ($reporter_notified) : ?> has been notified of your interest. If they choose to do so, they'll send you a Facebook message. (You may want to double-check <a href="https://www.facebook.com/messages/other/">your "Other" mailbox</a> occasionally to ensure you don't miss their message.)<?php endif;?>.
+        shared this<?php if ($reporter_notified) : ?> has been notified of your interest. If they choose to do so, they'll send you a Facebook message. (You may want to double-check <a href="https://www.facebook.com/messages/other/">your "Other" mailbox</a> occasionally to ensure you don't miss their message.)<?php endif;?>.
     </p>
     <article id="pat-report-info">
         <h1><?php print he($report->report_title);?></h1>
