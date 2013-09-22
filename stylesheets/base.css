@@ -444,6 +444,7 @@ legend {
     border-top: 1px solid;
     padding: 1em;
 }
+#pat-find-report-form legend { display: none; }
 fieldset {
     margin: 20px 25px 0 0;
     border: 1px solid;

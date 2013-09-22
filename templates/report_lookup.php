@@ -82,11 +82,11 @@ if (isset($_GET['who'])) {
 }
 ?>
 <section id="MainContent">
-    <h1>Find a story</h1>
+    <h1>Search</h1>
     <nav>
         <ul class="SectionNavigation">
-            <li<?php if (isset($_GET['mine'])) : ?> class="active"<?php endif;?>><a href="<?php print $_SERVER['PHP_SELF'];?>?action=lookup&amp;mine">View stories I shared</a></li>
-            <li><a href="<?php print $_SERVER['PHP_SELF'];?>?action=export&amp;header">Download stories I shared</a></li>
+            <li<?php if (isset($_GET['mine'])) : ?> class="active"<?php endif;?>><a href="<?php print $_SERVER['PHP_SELF'];?>?action=lookup&amp;mine">View info I shared</a></li>
+            <li><a href="<?php print $_SERVER['PHP_SELF'];?>?action=export&amp;header">Download info I shared</a></li>
         </ul>
     </nav>
     <?php if ($reports_found && is_numeric($_GET['id'])) : ?>
@@ -173,14 +173,13 @@ if (isset($_GET['who'])) {
     <p>No information on this person could be found. Would you like to <a href="<?php print he(AppInfo::getUrl("/reports.php?action=new&reportee_id=$reportee_id"));?>">share some</a>?</p>
     <?php } ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
-        <p>Search for a story.</p>
         <fieldset><legend>Reportee details</legend>
             <?php
             reporteeNameField(array(
-                'label' => 'I want to know if there are any visible stories about',
-                'description_html' => 'Enter the name of the person you\'d like to find stories about. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.)'
+                'label' => 'I want to know if there is any information about',
+                'description_html' => 'Enter the name of any Facebook user. If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.)'
             ));?>
         </fieldset>
-        <input type="submit" name="submit" value="Find stories" />
+        <input type="submit" name="submit" value="Search" />
     </form>
 </section>
