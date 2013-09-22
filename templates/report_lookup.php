@@ -170,7 +170,7 @@ if (isset($_GET['who'])) {
         ?>
     </form>
     <?php } else if ($_REQUEST['submit'] || $_REQUEST['submit_clarification']) { ?>
-    <p>No story matching this description could be found. Maybe you want to <a href="<?php print he(AppInfo::getUrl('/reports.php?action=new'));?>">share one</a>?</p>
+    <p>No information on this person could be found. Would you like to <a href="<?php print he(AppInfo::getUrl("/reports.php?action=new&reportee_id=$reportee_id"));?>">share some</a>?</p>
     <?php } ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
         <p>Search for a story.</p>
