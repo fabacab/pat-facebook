@@ -62,21 +62,16 @@ if (pg_num_rows($result)) {
         </li>
 -->
         <li>
-            <a href="reports.php?action=lookup" class="icon websites">Find stories</a>
-            <p>Search for stories, or <a href="reports.php?action=lookup&amp;mine">view stories you shared</a>.</p>
+            <a href="reports.php?action=lookup" class="icon websites">Search</a>
+            <p>Or <a href="reports.php?action=lookup&amp;mine">view information you shared</a>.</p>
         </li>
-<!--
         <li>
-            <a href="https://developers.facebook.com/docs/guides/mobile/" target="_top" class="icon mobile-apps">Mobile Apps</a>
-            <p>
-            Integrate with our core experience by building apps
-            that operate within Facebook.
-            </p>
+            <a href="reports.php?action=new" class="icon apps-on-facebook">Share information</a>
+            <p>Share information about a Facebook user's behavior.</p>
         </li>
--->
         <li>
-            <a href="reports.php?action=new" class="icon apps-on-facebook">Share a story</a>
-            <p>Share a story about another Facebook user's behavior.</p>
+            <a href="https://userscripts.org/scripts/show/177813" target="_blank" class="icon mobile-apps">Get alerts</a>
+            <p>Download the app to get alerts as you browse.</p>
         </li>
     </ul>
 </section>
@@ -85,7 +80,7 @@ if (pg_num_rows($result)) {
     <h1>Information from within your network</h1>
 
     <div class="list">
-        <h3>Stories shared by others about people you've shared about</h3>
+        <h3>More information on people you've shared about</h3>
         <?php if ($reports_about_reported) { ?>
         <ul class="friends">
         <?php
@@ -101,7 +96,7 @@ if (pg_num_rows($result)) {
     </div>
 
     <div class="list">
-        <h3>Stories shared about your Facebook friends</h3>
+        <h3>More information about your Facebook friends</h3>
         <?php if ($reports_about_friends) { ?>
         <ul class="friends">
         <?php
