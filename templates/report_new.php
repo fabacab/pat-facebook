@@ -40,7 +40,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
 }
 ?>
 <section id="MainContent">
-    <h1>Share a new story</h1>
+    <h1>Share</h1>
     <?php if (
               (!isset($_REQUEST['submit']) && !isset($_REQUEST['submit_clarification']))
               ||
@@ -49,13 +49,12 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
               isset($report)
             ) { ?>
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
-        <p>Share a story.</p>
-        <fieldset><legend>Story details</legend>
+        <fieldset><legend>Details</legend>
             <input type="hidden" id="reporter_id" name="reporter_id" value="<?php print he($user_id);?>" />
             <?php
             reporteeNameField(array(
-                'label' => 'This story is about',
-                'description_html' => 'If this is not already pre-filled, enter the name of the person you\'re sharing about. We\'ll look for a match and ask you to confirm. (If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.)'
+                'label' => 'This is information about',
+                'description_html' => 'Enter the name of any Facebook user. If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.'
             ));?>
 <!--
             <label>
@@ -69,7 +68,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
 -->
             <label>
                 What happened?
-                <span class="description">In your own words, describe what happened. The more detailed your story is, the better. If you can, please include the names of venues and witnesses, the time of day, locations, and any other details you can remember.</span>
+                <span class="description">Tell others in your social network about your experience with this person. Share as many or as few details as you feel comfortable with. It's also okay to provide information about bad experiences your friends have had with this person.</span>
                 <?php if ($report && $report->getValidationErrors('report_text')) : ?>
                 <ul class="errors">
                 <?php foreach ($report->getValidationErrors('report_text') as $error_message) : ?>
@@ -80,8 +79,8 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                 <textarea name="report_text" placeholder="Type your story here." required="required"><?php print he($_REQUEST['report_text']);?></textarea>
             </label>
             <label>
-                What's the single most important point about what happened?
-                <span class="description">In as few words as possible, summarize the main take-away from your story. This is used like a "subject" line in email to display a brief headline for your story in the event there is more than one incident to display about a given individual.</span>
+                Short description:
+                <span class="description">A brief headline that will appear on your friends' Dashboards or when your statement shows up in a search.</span>
                 <?php if ($report && $report->getValidationErrors('report_title')) : ?>
                 <ul class="errors">
                 <?php foreach ($report->getValidationErrors('report_title') as $error_message) : ?>
@@ -93,7 +92,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             </label>
 <!-- TODO: Should we add "when/where" questions, too? -->
         </fieldset>
-        <fieldset><legend>Communication preference</legend>
+        <fieldset><legend>Your identity</legend>
 <!-- TODO: Do we want to allow anonymous reporting? -->
 <!--
             <label>
@@ -102,57 +101,58 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             </label>
 -->
             <label>
-                <input type="radio" name="communication_preference" value="approval" required="required"
-                    <?php if (!isset($_REUQEST['communication_preference']) || $_REQUEST['communication_preference'] === 'approval') : ?>
-                    checked="checked"
-                    <?php endif;?>
-                /> <!--I'd like to file this report under my name, but -->I do not want other people to learn that I wrote this story unless I approve of them knowing.
-                <span class="description">This option (filing pseudonymously) means that <?php print he($FBApp->getAppName());?> will associate your story with your identity, but will only reveal your identity to others who ask about it after confirming with you if you are comfortable letting the other person know who wrote this story. (You'll get a notification letting you know someone's interested when that happens so you don't have to keep checking this site.)</span>
-            </label>
-            <label>
                 <input type="radio" name="communication_preference" value="allowed"
                     <?php if ($_REQUEST['communication_preference'] === 'allowed') : ?>
                     checked="checked"
                     <?php endif;?>
-                /> <!--I'd like to file this report under my name and -->I would like others to be able to contact me about this story as soon as they are interested in doing so.
-                <span class="description">This option (filing non-anonymously) means that anyone who asks will be shown that you wrote this story. Only use this option if you are comfortable letting <em>everyone on the Internet</em> know that you shared this story.</span>
+                /> Share my identity.
+                <span class="description">People viewing your statement will be able to see that it was written by you.</span>
+            </label>
+            <label>
+                <input type="radio" name="communication_preference" value="approval" required="required"
+                    <?php if (!isset($_REUQEST['communication_preference']) || $_REQUEST['communication_preference'] === 'approval') : ?>
+                    checked="checked"
+                    <?php endif;?>
+                /> Keep my identity private.
+                <span class="description">People viewing your statement will not be able to see that it was written by you. If they request to know the author's identity, you will get a notification and can decide on a case-by-case basis about who to share your identity with.</span>
             </label>
         </fieldset>
-        <fieldset><legend>Story visibility</legend>
+        <fieldset><legend>Statement visibility</legend>
             <label>
                 <input type="radio" name="report_visibility" value="public" required="required"
                     <?php if ($_REQUEST['report_visibility'] === 'public') : ?>
                     checked="checked"
                     <?php endif;?>
-                /> I want the entire Internet to be able to read this story.
-                <span class="description">This option makes your story visible to the public. Everyone one the Internet will be able to find and read your story.</span>
+                /> Public
+                <span class="description">Anyone on the Internet can find and read this information.</span>
             </label>
             <label>
                 <input type="radio" name="report_visibility" value="friends"
                     <?php if (!isset($_REQUEST['report_visibility']) || $_REQUEST['report_visibility'] === 'friends') : ?>
                     checked="checked"
                     <?php endif;?>
-                /> I only want my Facebook friends to be able to read this story.
-                <span class="description">This option hides your story from everyone except your Facebook friends.</span>
+                /> Friends only
+                <span class="description">Hide this information from everyone except my Facebook friends.</span>
             </label>
             <label>
                 <input type="radio" name="report_visibility" value="reporters"
                     <?php if ($_REQUEST['report_visibility'] === 'reporters') : ?>
                     checked="checked"
                     <?php endif;?>
-                /> I only want other people who have shared a story about this individual to be able to read this story.
-                <span class="description">This option hides your story from everyone unless they, too, have shared a story about this individual.</span>
+                /> Only other people who have shared
+                <span class="description">Hide this information from everyone except users who have also shared information with PAT-Facebook about this same person.</span>
             </label>
             <label>
                 <input type="radio" name="report_visibility" value="reporter_friends"
                     <?php if ($_REQUEST['report_visibility'] === 'reporter_friends') : ?>
                     checked="checked"
                     <?php endif;?>
-                /> I only want my Facebook friends who have shared a story about this individual to be able to read this story.
-                <span class="description">This option hides your story from everyone unless they are your Facebook friend <em>and</em> they, too, have shared a story about this individual.</span>
+                /> Only friends who have shared
+                <span class="description">Hide this information from everyone except my Facebook friends who have also shared information with PAT-Facebook about this same person.</span>
             </label>
         </fieldset>
-        <input type="submit" name="submit" value="Share this story" />
+        <input type="submit" name="submit" value="Share" />
+        <p><span class="description">Information submitted to PAT-Facebook can not be edited or deleted. Please keep in mind that even if you choose to keep your identity private, details you share here could be used to identify you. Put your own safety first.</span></p>
     </form>
     <?php } else if (empty($reportee_id)) { ?>
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
