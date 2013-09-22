@@ -46,9 +46,7 @@ if (is_numeric($reportee_id)) {
     $search_results = array_merge($search_results, $x['search_results']);
     $next_search_results_url = $x['next_page'];
     if (empty($search_results) && false !== strpos($_REQUEST['reportee_name'], ' ')) {
-        // If we didn't get any results, try guessing their username.
-        $username = str_replace(' ', '', $_REQUEST['reportee_name']);
-        $x = $FB->api("/$username");
+        $x = guessFacebookUsername($_REQUEST['reportee_name']);
         if ($x) {
             $search_results[] = $x;
         }

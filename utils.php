@@ -72,3 +72,36 @@ function processFacebookSearchResults ($response) {
     }
     return array('search_results' => $r, 'next_page' => $n);
 }
+
+/**
+ * Given a string, mutates it in various ways to guess whether or not it's also
+ * a Facebook username. For instance, given "Joe Cassidy Smith", this will try
+ *
+ *     1. "JoeCassidySmith"
+ *     2. "JCassidySmith"
+ *     3. "JCSmith"
+ *     4. "JCS"
+ *
+ * @param string $str The string to start guessing with.
+ * @return mixed A Facebook response if a match is eventually found, false otherwise.
+ */
+function guessFacebookUsername ($str, $attempts = 0) {
+    global $FB;
+    $name_parts = explode(' ', $str);
+    if ($attempts > count($name_parts)) {
+        return false; // Give up trying to guess.
+    }
+    $guess = '';
+    for ($i = 0; $i < $attempts; $i++) {
+        $guess .= substr(array_shift($name_parts), 0, 1);
+    }
+    foreach ($name_parts as $part) {
+        $guess .= $part;
+    }
+    try {
+        $guessX = $FB->api("/$guess");
+    } catch (FacebookApiException $e) {
+        //var_dump($e);
+    }
+    return ($guessX) ? $guessX : guessFacebookUsername($str, ++$attempts);
+}
