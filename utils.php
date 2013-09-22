@@ -74,6 +74,21 @@ function processFacebookSearchResults ($response) {
 }
 
 /**
+ * Fetches user data from the Facebook Graph API, even if the current user is blocked.
+ */
+function getFacebookUserInfoFromApi ($FB, $url) {
+    try {
+        $response = $FB->api("$url");
+    } catch (Exception $e) {
+        // Assume this user has blocked us, so try again sans API.
+        if ($e->getType() === 'GraphMethodException') {
+            $response = json_decode(file_get_contents("https://graph.facebook.com$url"), true);
+        }
+    }
+    return $response;
+}
+
+/**
  * Given a string, mutates it in various ways to guess whether or not it's also
  * a Facebook username. For instance, given "Joe Cassidy Smith", this will try
  *
@@ -99,7 +114,7 @@ function guessFacebookUsername ($str, $attempts = 0) {
         $guess .= $part;
     }
     try {
-        $guessX = $FB->api("/$guess");
+        $guessX = getFacebookUserInfoFromApi($FB, "/$guess");
     } catch (FacebookApiException $e) {
         //var_dump($e);
     }

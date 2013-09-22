@@ -18,25 +18,12 @@ if ($_REQUEST['submit_clarification'] && $_REQUEST['next_page']) {
 }
 
 if (is_numeric($reportee_id)) {
-    try {
-        $reportee_data = $FB->api("/$reportee_id");
-    } catch (Exception $e) {
-        // Assume this user has blocked us, so try again sans API.
-        if ($e->getType() === 'GraphMethodException') {
-            $reportee_data = json_decode(file_get_contents("https://graph.facebook.com/$reportee_id"), true);
-        }
-    }
+    $reportee_data = getFacebookUserInfoFromApi($FB, $reportee_id);
 } else if (empty($reportee_id) && !empty($_REQUEST['reportee_name']) && empty($_REQUEST['submit_clarification'])) {
     // If the "name" is numeric or doesn't have spaces, assume it's an ID or an
     // unique username, so do that search first.
     if (is_numeric($_REQUEST['reportee_name']) || (false === strpos($_REQUEST['reportee_name'], ' '))) {
-        try {
-            $search_results[] = $FB->api("/{$_REQUEST['reportee_name']}");
-        } catch (FacebookApiException $e) {
-            if ($e->getType() === 'GraphMethodException') {
-                $search_results[] = json_decode(file_get_contents("https://graph.facebook.com/{$_REQUEST['reportee_name']}"), true);
-            }
-        }
+        $search_results[] = getFacebookUserInfoFromApi($FB, $_REQUEST['reportee_name']);
     }
     // But then always do a Graph Search, too.
     $x = processFacebookSearchResults($FB->api(

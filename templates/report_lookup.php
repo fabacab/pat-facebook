@@ -7,14 +7,7 @@ if (is_numeric($_GET['id'])) {
         if ($report->reportee_id) {
             // Get information about the reportee.
             $url = "/{$report->reportee_id}?fields=name,picture.type(square),link";
-            try {
-                $reportee = $FB->api($url);
-            } catch (FacebookApiException $e) {
-                // Assume this user has blocked us, so try again sans API.
-                if ($e->getType() === 'GraphMethodException') {
-                    $reportee = json_decode(file_get_contents("https://graph.facebook.com$url"), true);
-                }
-            }
+            $reportee = getFacebookUserInfoFromApi($FB, $url);
             if ($reportee['picture']['data']['url']) {
                 $reportee['picture'] = $reportee['picture']['data']['url'];
             }
