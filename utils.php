@@ -113,10 +113,6 @@ function guessFacebookUsername ($str, $attempts = 0) {
     foreach ($name_parts as $part) {
         $guess .= $part;
     }
-    try {
-        $guessX = getFacebookUserInfoFromApi($FB, "/$guess");
-    } catch (FacebookApiException $e) {
-        //var_dump($e);
-    }
+    $guessX = getFacebookUserInfoFromApi($FB, "/$guess");
     return ($guessX) ? $guessX : guessFacebookUsername($str, ++$attempts);
 }
