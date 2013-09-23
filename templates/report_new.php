@@ -51,6 +51,13 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
         <fieldset><legend>Details</legend>
             <input type="hidden" id="reporter_id" name="reporter_id" value="<?php print he($user_id);?>" />
+            <?php if ($report && $report->getValidationErrors('reporter_id')) : ?>
+            <ul class="errors">
+            <?php foreach ($report->getValidationErrors('reporter_id') as $error_message) : ?>
+                <li><?php print he($error_message);?></li>
+            <?php endforeach;?>
+            </ul>
+            <?php endif;?>
             <?php
             reporteeNameField(array(
                 'label' => 'This is information about',

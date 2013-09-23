@@ -52,8 +52,7 @@ if (is_numeric($_GET['requester'])) {
 }
 if (isset($_GET['who'])) {
     if (!$report->reporter_id) {
-        // Anonymous report.
-        $reporter = 'Anonymous';
+        // TODO: Anonymous report?
     } else if ($report->contactable === 'allowed') {
         // If the reporter allows contact, let the requester view their identity.
         // TODO: Currently, we ONLY store the reporter's Facebook ID. This means we

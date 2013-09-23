@@ -67,7 +67,7 @@ class PATIncident {
         return true;
     }
     private function isValidId ($x) {
-        return is_numeric($x);
+        return (is_numeric($x) && ($x > 0)) ? true : false;
     }
 
     private function validateReportTitle () {
