@@ -36,9 +36,9 @@ function reporteeNameField ($params = array()) {
                 />.
                 <datalist id="friends-list">
                     <select><!-- For non-HTML5 fallback. -->
-                        <?php foreach ($me->getFriends() as $friend) : ?>
+                        <?php if ($me) : foreach ($me->getFriends() as $friend) : ?>
                         <option value="<?php print he($friend['name']);?>"><?php print he($friend['id']);?></option>
-                        <?php endforeach;?>
+                        <?php endforeach; endif;?>
                     </select>
                 </datalist>
                 <span class="description"><?php print ($params['description_html']) ? $params['description_html'] : he($params['description']);?></span>
