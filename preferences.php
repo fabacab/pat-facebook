@@ -29,10 +29,10 @@ include 'templates/header.php';
             <p><strong>Send me a Facebook notification whenever&hellip;</strong></p>
             <p><label><input type="checkbox" id="" name="notify_on_same_reportee"
                 <?php if ($prefs['notify_on_same_reportee']) : ?>checked="checked"<?php endif;?>
-                /> &hellip;someone shares a story about someone I've shared a story about.</label></p>
+                /> &hellip;someone shares information about the same person I've shared about.</label></p>
             <p><label><input type="checkbox" id="" name="notify_on_friend_reported"
                 <?php if ($prefs['notify_on_friend_reported']) : ?>checked="checked"<?php endif;?>
-                /> &hellip;someone shares a story about one of my Facebook friends.</label></p>
+                /> &hellip;someone shares information about one of my Facebook friends.</label></p>
         </fieldset>
         <fieldset><legend>Date and time preferences</legend>
             <p><label>I am usually located in the
