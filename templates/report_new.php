@@ -49,7 +49,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
               isset($report)
             ) { ?>
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
-        <fieldset><legend>Details (<a href="<?php print he(DOCUMENTATION_URL_BASE);?>/User-Manual:Talk-About-It#how-to-contribute-information" target="_blank">help with this section</a>)</legend>
+        <fieldset><legend>Details (<a href="<?php print he(DOCUMENTATION_URL_BASE);?>/User-Manual:Talk-About-It#how-to-contribute-information" target="_blank">help</a>)</legend>
             <input type="hidden" id="reporter_id" name="reporter_id" value="<?php print he($user_id);?>" />
             <?php if ($report && $report->getValidationErrors('reporter_id')) : ?>
             <ul class="errors">
@@ -99,7 +99,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             </label>
 <!-- TODO: Should we add "when/where" questions, too? -->
         </fieldset>
-        <fieldset><legend>Your identity (<a href="<?php print he(DOCUMENTATION_URL_BASE);?>/User-Manual:Decide-Who-Knows#your-identity" target="_blank">help with this section</a>)</legend>
+        <fieldset><legend>Your identity (<a href="<?php print he(DOCUMENTATION_URL_BASE);?>/User-Manual:Decide-Who-Knows#your-identity" target="_blank">help</a>)</legend>
 <!-- TODO: Do we want to allow anonymous reporting? -->
 <!--
             <label>
@@ -124,7 +124,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                 <span class="description">People viewing your statement will not be able to see that it was written by you. If they request to know the author's identity, you will get a notification and can decide on a case-by-case basis about who to share your identity with.</span>
             </label>
         </fieldset>
-        <fieldset><legend>Statement visibility (<a href="<?php print he(DOCUMENTATION_URL_BASE);?>/User-Manual:Decide-Who-Knows#statement-visibility" target="_blank">help with this section</a>)</legend>
+        <fieldset><legend>Statement visibility (<a href="<?php print he(DOCUMENTATION_URL_BASE);?>/User-Manual:Decide-Who-Knows#statement-visibility" target="_blank">help</a>)</legend>
             <label>
                 <input type="radio" name="report_visibility" value="public" required="required"
                     <?php if ($_REQUEST['report_visibility'] === 'public') : ?>
