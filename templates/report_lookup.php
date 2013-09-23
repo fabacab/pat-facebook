@@ -120,33 +120,33 @@ if (isset($_GET['who'])) {
         <?php if ($user_id == $report->reporter_id) : ?>
         <ul class="pat-report-meta">
             <li>
-                Your identity will be revealed to
+                Your identity is
                 <?php
                 switch ($report->contactable) {
                     case 'allowed':
-                        print 'anyone who asks';
+                        print 'shared';
                         break;
                     case 'approval':
-                        print 'people you approve knowing';
+                        print 'private';
                         break;
                 }
                 ?>.
             </li>
             <li>
-                Story is visible to
+                Statement is
                 <?php
                 switch ($report->report_visibility) {
                     case 'public':
-                        print 'everyone';
+                        print 'visible to everyone';
                         break;
                     case 'friends':
-                        print 'your friends only';
+                        print 'only visible to friends';
                         break;
                     case 'reporters':
-                        print 'others who shared a story about the same person';
+                        print 'only visible to others who have shared about this person';
                         break;
                     case 'reporter_friends':
-                        print 'other friends of yours who also shared a story about the same person';
+                        print 'only visible to friends who have shared about this person';
                         break;
                 }
                 ?>.
