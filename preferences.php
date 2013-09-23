@@ -2,7 +2,7 @@
 require_once 'lib/pat-fb-init.php';
 
 if (!$me) {
-    header('Location: ' . AppInfo::getUrl($_SERVER['REQUEST_URI']));
+    header('Location: ' . AppInfo::getUrl());
     exit();
 }
 $prefs = $me->getPreferences();
