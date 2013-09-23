@@ -476,6 +476,7 @@ input[type="submit"] {
 #disambiguate-reportee-container {
     position: absolute;
     top: 5em;
+    z-index: 10;
     border: 1px solid gray;
     padding: 30px;
     background: #FFF;
