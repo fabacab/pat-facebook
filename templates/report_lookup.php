@@ -70,7 +70,7 @@ if (isset($_GET['who'])) {
         $FB->setAccessToken(getFacebookAppToken());
         try {
             $FB->api("/{$report->reporter_id}/notifications", 'post', array(
-                'template' => "@[$user_id] wants to learn that you wrote a PAT-FB report. Click here to review the report.",
+                'template' => "@[$user_id] viewed information you shared and has requested to know your identity.",
                 'href' => "reports.php?action=lookup&id={$report->id}&requester=$user_id"
             ));
             $reporter_notified = true;
