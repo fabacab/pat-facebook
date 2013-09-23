@@ -56,3 +56,6 @@ if ($user_id) {
 $FBApp = new AppInfo($FB->api('/' . AppInfo::appID()));
 $db = new PATFacebookDatabase();
 $db->connect(psqlConnectionStringFromDatabaseUrl());
+
+// Links to "help" screens.
+define('DOCUMENTATION_URL_BASE', 'https://github.com/meitar/pat-facebook/wiki');
