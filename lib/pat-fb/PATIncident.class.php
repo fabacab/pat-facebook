@@ -156,6 +156,11 @@ class PATIncident {
     }
 
     public function isVisible() {
+        if (!$this->reader) {
+            // If we don't have a reader, the user is "anonymous"
+            // so only public reports should be visible.
+            return ($this->report_visibility === 'public') ? true : false;
+        }
         // Always visible to oneself.
         if ($this->reporter_id == $this->reader->getId()) {
             return true;
