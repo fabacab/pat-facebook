@@ -127,7 +127,7 @@ if (isset($_GET['who'])) {
                         print 'shared';
                         break;
                     case 'approval':
-                        print 'private';
+                        print 'hidden';
                         break;
                 }
                 ?>.

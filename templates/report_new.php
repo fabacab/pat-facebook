@@ -120,7 +120,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                     <?php if (!isset($_REUQEST['communication_preference']) || $_REQUEST['communication_preference'] === 'approval') : ?>
                     checked="checked"
                     <?php endif;?>
-                /> Keep my identity private.
+                /> Keep my identity hidden.
                 <span class="description">People viewing your statement will not be able to see that it was written by you. If they request to know the author's identity, you will get a notification and can decide on a case-by-case basis about who to share your identity with.</span>
             </label>
         </fieldset>
@@ -159,7 +159,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             </label>
         </fieldset>
         <input type="submit" name="submit" value="Share" />
-        <p><span class="description">Information submitted to PAT-Facebook can not be edited or deleted. Please keep in mind that even if you choose to keep your identity private, details you share here could be used to identify you. Put your own safety first.</span></p>
+        <p><span class="description">Information submitted to PAT-Facebook can not be edited or deleted. Please keep in mind that even if you choose to keep your identity hidden, details you share here could be used to identify you. Put your own safety first.</span></p>
     </form>
     <?php } else if (empty($reportee_id)) { ?>
     <form id="pat-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}";?>">
