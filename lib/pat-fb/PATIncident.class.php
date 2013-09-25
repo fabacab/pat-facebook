@@ -172,15 +172,45 @@ class PATIncident {
         if ($this->reporter_id == $this->reader->getId()) {
             return true;
         }
+
         switch ($this->report_visibility) {
             case 'public':
                 return true;
             case 'friends':
                 return $this->reader->isFriendsWith($this->reporter_id);
             case 'reporters':
+                // This report visible to "only other people who have shared".
+                // Get a list of all other people who have shared.
                 foreach ($this->getAllReporters() as $reporter) {
+                    // For each person who has shared,
+                    // check if this reader is in that list.
                     if ($this->reader->getId() == $reporter) {
-                        return true;
+                        // This reader is a fellow reporter.
+                        // Returning TRUE here means that anyone who reported this
+                        // account can see this report, including the person who
+                        // this report is about, if that person has also submitted
+                        // a report about themselves. (I.e., if reporter_id===reportee_id)
+                        // So, is this reader the person whom this report is about?
+                        if ($this->reader->getId() !== $this->reportee_id) {
+                            // No, this reader is a fellow reporter, but not the reportee.
+                            return true;
+                        } else {
+                            // Yes, this reader is trying to look at a report about themself.
+                            // So, has this person submitted a report about themselves?
+                            $result = pg_query_params($this->db->getHandle(),
+                                'SELECT DISTINCT report_visibility FROM incidents WHERE reporter_id=$1 AND reportee_id=$1',
+                                array($this->reader->getId())
+                            );
+                            if (pg_num_rows($result)) {
+                                // Yes, this person has submitted a report about themselves.
+                                // But have they self-reported with the same visibility setting?
+                                while ($row = pg_fetch_object($result)) {
+                                    if ($row->report_visibility === $this->report_visibility) {
+                                        return true; // Yes, they ante'd up.
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 return false;
