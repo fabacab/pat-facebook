@@ -61,7 +61,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             <?php
             reporteeNameField(array(
                 'label' => 'This is information about',
-                'description_html' => 'Enter the name of any Facebook user. If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too.'
+                'description_html' => 'Enter the name of any Facebook user. If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too. (<a href="'.he(DOCUMENTATION_URL_BASE).'/User-Manual:Searching" target="_blank">help</a>)'
             ));?>
 <!--
             <label>
