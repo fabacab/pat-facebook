@@ -91,7 +91,7 @@ if (pg_num_rows($result)) {
         </ul>
         <!--<p><a href="TK_LINK">See all</a></p>-->
         <?php } else { ?>
-        <p>No reports found.</p>
+        <p>No information found.</p>
         <?php } ?>
     </div>
 
@@ -107,7 +107,7 @@ if (pg_num_rows($result)) {
         </ul>
         <!--<p><a href="TK_LINK">See all</a></p>-->
         <?php } else { ?>
-        <p>No reports found.</p>
+        <p>No information found.</p>
         <?php } ?>
     </div>
 </section>
