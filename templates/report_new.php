@@ -27,7 +27,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                         // send each of them a notification.
                         $FB->setAccessToken(getFacebookAppToken());
                         $FB->api("/{$usr->getId()}/notifications", 'post', array(
-                            'template' => 'Another story was shared in the ' . $FBApp->getAppName() . ' about someone you previously shared a story about; click here for more information.',
+                            'template' => 'More information was shared about someone you previously shared about; click here to read the statement.',
                             'href' => "reports.php?action=lookup&id=$rid"
                         ));
                     }
