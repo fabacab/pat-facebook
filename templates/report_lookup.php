@@ -113,7 +113,7 @@ if (isset($_GET['who'])) {
         <?php } else { ?>
         The person who
         <?php } ?>
-        shared this<?php if ($reporter_notified) : ?> has been notified of your interest. If they choose to do so, they'll send you a Facebook message. (You may want to double-check <a href="https://www.facebook.com/messages/other/">your "Other" mailbox</a> occasionally to ensure you don't miss their message.)<?php endif;?>.
+        shared this<?php if ($reporter_notified) : ?> has been notified of your interest. If they choose to do so, they'll send you a Facebook message. You may want to double-check <a href="https://www.facebook.com/messages/other/">your "Other" mailbox</a> occasionally to ensure you don't miss their message<?php endif;?>.
     </p>
     <article id="pat-report-info">
         <h1><?php print he($report->report_title);?></h1>
@@ -154,7 +154,7 @@ if (isset($_GET['who'])) {
         </ul>
         <?php endif;?>
         <p>This story is about: <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a>:</p>
-        <blockquote><p><?php print he($report->report_text);?></p></blockquote>
+        <blockquote><p><?php print nl2br(he($report->report_text));?></p></blockquote>
     </article>
     <?php if ($requester) : ?>
     <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know who submitted this statement. If you feel comfortable identifying yourself to them, <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>" target="_top">click here to send them a message</a>.</p>
