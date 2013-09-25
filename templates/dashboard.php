@@ -16,7 +16,7 @@ if ($me->getFriends()) {
         array_push($sql_vals, $friend['id']); // Add value to array.
         $i++;
     }
-    $sql .= ');';
+    $sql .= ') ORDER BY report_date DESC;';
     $result = pg_query_params($db->getHandle(),
         $sql,
         $sql_vals
@@ -40,7 +40,7 @@ if ($me->getFriends()) {
 $sql_vals = array();
 $sql  = 'SELECT * FROM incidents WHERE reportee_id IN (';
 $sql .= 'SELECT reportee_id FROM incidents WHERE reporter_id=$1';
-$sql .= ') AND reporter_id <> $1';
+$sql .= ') AND reporter_id <> $1 ORDER BY report_date DESC';
 $result = pg_query_params($db->getHandle(), $sql, array($user_id));
 if (pg_num_rows($result)) {
     while ($row = pg_fetch_assoc($result)) {
