@@ -100,6 +100,13 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
 <!-- TODO: Should we add "when/where" questions, too? -->
         </fieldset>
         <fieldset><legend>Your identity (<a href="<?php print he(DOCUMENTATION_URL_BASE);?>/User-Manual:Decide-Who-Knows#your-identity" target="_blank">help</a>)</legend>
+            <?php if ($report && $report->getValidationErrors('contactable')) : ?>
+            <ul class="errors">
+            <?php foreach ($report->getValidationErrors('contactable') as $error_message) : ?>
+                <li><?php print he($error_message);?></li>
+            <?php endforeach;?>
+            </ul>
+            <?php endif; ?>
 <!-- TODO: Do we want to allow anonymous reporting? -->
 <!--
             <label>
@@ -108,18 +115,20 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             </label>
 -->
             <label>
-                <input type="radio" name="communication_preference" value="allowed"
-                    <?php if ($_REQUEST['communication_preference'] === 'allowed') : ?>
+                <input type="radio" id="communication_preference_allowed" name="communication_preference" required="required" value="allowed"
+                    <?php if ($_REQUEST['communication_preference'] === 'allowed' || $_REQUEST['reportee_id'] == $user_id) : ?>
                     checked="checked"
                     <?php endif;?>
                 /> Share my identity.
                 <span class="description">People viewing your statement will be able to see that it was written by you.</span>
             </label>
             <label>
-                <input type="radio" name="communication_preference" value="approval" required="required"
-                    <?php if (!isset($_REUQEST['communication_preference']) || $_REQUEST['communication_preference'] === 'approval') : ?>
+                <input type="radio" id="communication_preference_approval" name="communication_preference" value="approval" required="required"
+                    <?php if (isset($_REQUEST['reportee_id']) && $_REQUEST['reportee_id'] == $user_id) { ?>
+                    disabled="disabled"
+                    <?php } else if (!isset($_REUQEST['communication_preference']) || $_REQUEST['communication_preference'] === 'approval') { ?>
                     checked="checked"
-                    <?php endif;?>
+                    <?php } //endif; ?>
                 /> Keep my identity hidden.
                 <span class="description">People viewing your statement will not be able to see that it was written by you. If they request to know the author's identity, you will get a notification and can decide on a case-by-case basis about who to share your identity with.</span>
             </label>

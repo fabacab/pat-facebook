@@ -183,6 +183,23 @@ PAT_Facebook.UI.displayReporteeSearch = function (e) {
                 });
                 $('#disambiguate-reportee-container').hide();
                 $('#disambiguate-reportee-container ul').remove();
+                // If the selected user is also the current user
+                if (FB.getUserID() == fbid) {
+                    // disable pseudonymous self-reporting.
+                    var el = document.getElementById('communication_preference_allowed');
+                    if (el) {
+                        el.setAttribute('checked', 'checked');
+                    }
+                    var el = document.getElementById('communication_preference_approval');
+                    if (el) {
+                        el.setAttribute('disabled', 'disabled');
+                    }
+                } else {
+                    var el = document.getElementById('communication_preference_approval');
+                    if (el) {
+                        el.removeAttribute('disabled');
+                    }
+                }
             });
             li.appendChild(label);
             list.appendChild(li);

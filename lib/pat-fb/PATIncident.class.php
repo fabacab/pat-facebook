@@ -23,6 +23,7 @@ class PATIncident {
     }
 
     public function fieldsValidate () {
+        // Validate individual field values.
         foreach ($this as $k => $v) {
             switch ($k) {
                 case 'reporter_id':
@@ -45,6 +46,12 @@ class PATIncident {
                     break;
             }
         }
+        // Validate field combinations.
+        // Disallow pseudonymous self-reporting.
+        if (($this->reporter_id === $this->reportee_id) && ($this->contactable != 'allowed')) {
+            $this->validation_errors['contactable'] = array('You may not hide your identity from statements you share about yourself.');
+        }
+
         return ($this->getValidationErrors()) ? false : true;
     }
 
