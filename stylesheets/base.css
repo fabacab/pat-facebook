@@ -461,6 +461,10 @@ label .description {
     color: #999;
     font-weight: normal;
 }
+label:hover .description {
+    color: #666;
+    transition: color .25s ease-in-out;
+}
 textarea {
     min-width: 60em;
     min-height: 10em;
