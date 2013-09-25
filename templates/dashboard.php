@@ -4,7 +4,7 @@ $reports_about_friends = array();
 $reports_about_reported = array();
 
 // Search for any reports against this user's friends.
-if ($me->getFriends()) {
+if ($me && $me->getFriends()) {
     $sql_vals = array();
     $sql = 'SELECT * FROM incidents WHERE reportee_id IN (';
     $i = 1;
