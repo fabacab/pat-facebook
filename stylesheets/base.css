@@ -458,11 +458,11 @@ label {
 }
 label .description {
     display: inline-block;
-    color: #999;
+    color: #666;
     font-weight: normal;
 }
 label:hover .description {
-    color: #666;
+    color: #333;
     transition: color .25s ease-in-out;
 }
 textarea {
