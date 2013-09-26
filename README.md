@@ -38,4 +38,4 @@ This project is 100% volunteer-run. There are no paid developers. There is no st
 
 There is also no budget.
 
-However, it takes time, heart, and material resources to ensure that this software continues to function, much less is improved on over time. If you can afford to do so, please consider making a donation in the form of food or money to [its houseless, nomadic developer](https://github.com/meitar/) at [Cyberbusking.org](http://Cyberbusking.org). Thank you very much.
+It takes time, heart, and material resources to ensure that this software continues to function, much less is improved on over time. If you can afford to do so, please consider making a donation in the form of food or money to [its houseless, nomadic developer](https://github.com/meitar/) at [Cyberbusking.org](http://Cyberbusking.org). Thank you very much.
