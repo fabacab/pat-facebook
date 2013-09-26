@@ -6,7 +6,7 @@
  */
 // ==UserScript==
 // @name           Predator Alert Tool for Facebook (PAT-Facebook)
-// @version        0.1
+// @version        0.1.1
 // @namespace      com.maybemaimed.facebook.predator-alert-tool
 // @updateURL      https://userscripts.org/scripts/source/177813.user.js
 // @description    Alerts you of people who have allegedly violated other people's consent as you browse Facebook.
@@ -36,11 +36,26 @@ PAT_FB.log = function (msg) {
     if (!PAT_FB.CONFIG.debug) { return; }
     GM_log('PAT-Facebook: ' + msg);
 };
+// Utility function to read cookie values.
+function getCookie (n) {
+    try {
+        return unescape(document.cookie.match('(^|;)?'+n+'=([^;]*)(;|$)')[2]);
+    } catch (e) {
+        return null;
+    }
+}
+PAT_FB.getUserID = function () {
+    try {
+        return unsafeWindow.Env.user
+    } catch (e) {
+        return getCookie('c_user');
+    }
+};
 
 // Initializations.
 GM_addStyle('\
 ');
-
+PAT_FB.current_user = null; // Who are we?
 PAT_FB.init = function () {
     // We need to capture the session cookies from the PAT-FB server, so if we
     // loaded the server's pages, save the cookies locally for later use.
@@ -48,6 +63,7 @@ PAT_FB.init = function () {
     if (unsafeWindow.location.host == PAT_FB.parseApiUrl().host) {
         GM_setValue('pat_fb_cookies', document.cookie);
     }
+    PAT_FB.current_user = PAT_FB.getUserID();
     var MutationObserver = unsafeWindow.MutationObserver || unsafeWindow.WebKitMutationObserver;
     var observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
@@ -122,6 +138,10 @@ PAT_FB.parseApiUrl = function () {
  */
 PAT_FB.maybeFlagEntity = function (fbid, el) {
     if (!fbid) { PAT_FB.log('Invalid ID passed to maybeFlagEntity().'); return false; }
+    if (fbid == PAT_FB.current_user && GM_getValue('ignore_reports_about_me', true)) {
+        PAT_FB.log('Refusing to flag ourselves (current user ID ' + PAT_FB.current_user + ').');
+        return false;
+    }
     PAT_FB.log('About to query for reports on ID ' + fbid.toString());
     GM_xmlhttpRequest({
         'method': 'GET',
