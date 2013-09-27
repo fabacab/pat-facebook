@@ -58,11 +58,6 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
             <?php endforeach;?>
             </ul>
             <?php endif;?>
-            <?php
-            reporteeNameField(array(
-                'label' => 'This is information about',
-                'description_html' => 'Enter the name of any Facebook user. If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too. (<a href="'.he(DOCUMENTATION_URL_BASE).'/User-Manual:Searching" target="_blank">help</a>)'
-            ));?>
 <!--
             <label>
                 I feel this violation was
@@ -75,7 +70,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
 -->
             <label>
                 What happened?
-                <span class="description">Tell others in your social network about your experience with this person. Share as many or as few details as you feel comfortable with. It's also okay to provide information about bad experiences your friends have had with this person.</span>
+                <span class="description">Tell others in your social network about your experience. Share as many or as few details as you feel comfortable sharing. It's also okay to provide information about bad experiences your friends have had.</span>
                 <?php if ($report && $report->getValidationErrors('report_text')) : ?>
                 <ul class="errors">
                 <?php foreach ($report->getValidationErrors('report_text') as $error_message) : ?>
@@ -85,9 +80,14 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                 <?php endif; ?>
                 <textarea name="report_text" placeholder="Type your story here." required="required"><?php print he($_REQUEST['report_text']);?></textarea>
             </label>
+            <?php
+            reporteeNameField(array(
+                'label' => 'Who was involved?',
+                'description_html' => 'Link this to a Facebook profile by entering their name or <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>. (<a href="'.he(DOCUMENTATION_URL_BASE).'/User-Manual:Searching" target="_blank">help</a>)'
+            ));?>
             <label>
                 Short description:
-                <span class="description">A brief headline that will appear on your friends' Dashboards or when your statement shows up in a search.</span>
+                <span class="description">Write a brief headline that will appear on others' Dashboards or when your statement shows up in a search.</span>
                 <?php if ($report && $report->getValidationErrors('report_title')) : ?>
                 <ul class="errors">
                 <?php foreach ($report->getValidationErrors('report_title') as $error_message) : ?>

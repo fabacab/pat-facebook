@@ -153,7 +153,7 @@ if (isset($_GET['who'])) {
             </li>
         </ul>
         <?php endif;?>
-        <p>This story is about: <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a>:</p>
+        <p>This statement is attached to <a href="<?php print he($reportee['link']);?>" target="_blank"><img alt="" src="<?php print he($reportee['picture']);?>" /> <?php print he($reportee['name']);?></a>:</p>
         <blockquote><p><?php print nl2br(he($report->report_text));?></p></blockquote>
     </article>
     <?php if ($requester) : ?>
@@ -178,7 +178,7 @@ if (isset($_GET['who'])) {
         <fieldset><legend>Reportee details</legend>
             <?php
             reporteeNameField(array(
-                'label' => 'I want to know if there is any information about',
+                'label' => 'Show me information about',
                 'description_html' => 'Enter the name of any Facebook user. If you know their <a href="http://findmyfacebookid.com/" target="_blank">Facebook user ID number</a>, you can use that, too. (<a href="'.he(DOCUMENTATION_URL_BASE).'/User-Manual:Searching" target="_blank">help</a>)'
             ));?>
         </fieldset>
