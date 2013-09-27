@@ -156,7 +156,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                     checked="checked"
                     <?php endif;?>
                 /> Only other people who have shared
-                <span class="description">Hide this information from everyone except users who have also shared information with PAT-Facebook about this same person.</span>
+                <span class="description">Hide this information from everyone except users who have also shared information with PAT-Facebook linked to this same person.</span>
             </label>
             <label>
                 <input type="radio" name="report_visibility" value="reporter_friends"
@@ -164,7 +164,7 @@ if (isset($_REQUEST['submit']) && !empty($_REQUEST['reportee_id'])) {
                     checked="checked"
                     <?php endif;?>
                 /> Only friends who have shared
-                <span class="description">Hide this information from everyone except my Facebook friends who have also shared information with PAT-Facebook about this same person.</span>
+                <span class="description">Hide this information from everyone except my Facebook friends who have also shared information with PAT-Facebook linked to this same person.</span>
             </label>
         </fieldset>
         <input type="submit" name="submit" value="Share" />
