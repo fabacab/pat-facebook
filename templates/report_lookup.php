@@ -98,7 +98,7 @@ if (isset($_GET['who'])) {
     <p>Your stories:</p><?php reportList($reports_found);?>
     <?php } else if ($reports_found && is_numeric($reportee_id)) { ?>
     <p>
-        Information that has been shared about <a href="<?php print he($reportee_data['link']);?>"><?php print he($reportee_data['name']);?></a>:
+        Information that has been shared and linked to <a href="<?php print he($reportee_data['link']);?>"><?php print he($reportee_data['name']);?></a>:
     </p>
     <?php reportList($reports_found);?>
     <?php } else if ($report && $reportee) { ?>
@@ -106,7 +106,7 @@ if (isset($_GET['who'])) {
         <?php if ($report->reporter_id === $user_id) { ?>
         You
         <? } else if (!isset($_GET['who'])) { ?>
-        <a href="<?php print he("{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}&who")?>" title="Learn who shared this story.">Someone else</a>
+        <a href="<?php print he("{$_SERVER['PHP_SELF']}?{$_SERVER['QUERY_STRING']}&who")?>" title="Learn who shared this.">Someone else</a>
         <?php } else if ($reporter) { ?>
         <a href="<?php print he($reporter['link']);?>" target="_top"><img alt="" src="<?php print he($reporter['picture']['data']['url']);?>" /> <?php print he($reporter['name']);?></a>
         <?php if ($reporter['email']) : ?>(<a href="mailto:<?php print he($reporter['email']);?>">Send <?php print he($reporter['name']);?> an email about this incident</a>.)<?php endif;?>
@@ -143,10 +143,10 @@ if (isset($_GET['who'])) {
                         print 'only visible to friends';
                         break;
                     case 'reporters':
-                        print 'only visible to others who have shared about this person';
+                        print 'only visible to others who have shared and linked to this person';
                         break;
                     case 'reporter_friends':
-                        print 'only visible to friends who have shared about this person';
+                        print 'only visible to friends who have shared and linked to this person';
                         break;
                 }
                 ?>.

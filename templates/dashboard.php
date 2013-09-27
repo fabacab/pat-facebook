@@ -67,7 +67,7 @@ if (pg_num_rows($result)) {
         </li>
         <li>
             <a href="reports.php?action=new" class="icon apps-on-facebook">Share information</a>
-            <p>Share information about a Facebook user's behavior.</p>
+            <p>Share your story related to a Facebook user's behavior.</p>
         </li>
         <li>
             <a href="https://userscripts.org/scripts/show/177813" target="_blank" class="icon mobile-apps">Get alerts</a>
