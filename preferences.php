@@ -29,7 +29,7 @@ include 'templates/header.php';
             <p><strong>Send me a Facebook notification whenever&hellip;</strong></p>
             <p><label><input type="checkbox" id="" name="notify_on_same_reportee"
                 <?php if ($prefs['notify_on_same_reportee']) : ?>checked="checked"<?php endif;?>
-                /> &hellip;someone shares information about the same person I've shared about.</label></p>
+                /> &hellip;someone shares information linked to the same person I've linked.</label></p>
 <!-- DEV NOTE: This feature is not yet implemented. -->
 <!--
             <p><label><input type="checkbox" id="" name="notify_on_friend_reported"

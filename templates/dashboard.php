@@ -80,7 +80,7 @@ if (pg_num_rows($result)) {
     <h1>Information from within your network</h1>
 
     <div class="list">
-        <h3>More information on people you've shared about</h3>
+        <h3>More information linked to people you've linked to</h3>
         <?php if ($reports_about_reported) { ?>
         <ul class="friends">
         <?php
@@ -96,7 +96,7 @@ if (pg_num_rows($result)) {
     </div>
 
     <div class="list">
-        <h3>More information about your Facebook friends</h3>
+        <h3>More information linked to your Facebook friends</h3>
         <?php if ($reports_about_friends) { ?>
         <ul class="friends">
         <?php
