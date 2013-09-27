@@ -213,11 +213,15 @@ footer .GlobalNavigation li:last-child::after {
     text-align: left;
 }
 
-#get-started li strong {
-    font-weight: bold;
-}
 #get-started li {
     list-style-type: disc;
+}
+
+#get-started a:link {
+    color: green;
+}
+#get-started a:visited {
+    color: #FFF;
 }
 
 /* ------------------------------------------ */
