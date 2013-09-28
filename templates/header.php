@@ -22,7 +22,7 @@
     <meta property="og:url" content="<?php echo AppInfo::getUrl(); ?>" />
     <meta property="og:image" content="<?php echo AppInfo::getUrl('/logo.png'); ?>" />
     <meta property="og:site_name" content="<?php echo he($FBApp->getAppName()); ?>" />
-    <meta property="og:description" content="My first app" />
+    <meta property="og:description" content="Supporting survivors of sexual assault helps break the silence about their own experiences, and the stronger our community responses to sexual violence become." />
     <meta property="fb:app_id" content="<?php echo AppInfo::appID(); ?>" />
 
     <script type="text/javascript" src="//code.jquery.com/jquery-1.7.1.min.js"></script>
