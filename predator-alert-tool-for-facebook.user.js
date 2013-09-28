@@ -6,7 +6,7 @@
  */
 // ==UserScript==
 // @name           Predator Alert Tool for Facebook (PAT-Facebook)
-// @version        0.1.1
+// @version        0.1.2
 // @namespace      com.maybemaimed.facebook.predator-alert-tool
 // @updateURL      https://userscripts.org/scripts/source/177813.user.js
 // @description    Alerts you of people who have allegedly violated other people's consent as you browse Facebook.
@@ -14,7 +14,7 @@
 // @include        http://www.facebook.com/*
 // @include        https://apps.facebook.com/*
 // @include        http://apps.facebook.com/*
-// @include        https://serene-ravine-7926.herokuapp.com/*
+// @include        https://predator-alert-tool.herokuapp.com/*
 // @exclude        https://www.facebook.com/ajax*
 // @exclude        http://www.facebook.com/ajax*
 // @exclude        https://www.facebook.com/ai.php*
@@ -28,7 +28,7 @@
 PAT_FB = {};
 PAT_FB.CONFIG = {
     'debug': false, // switch to true to debug.
-    'api_url': 'https://serene-ravine-7926.herokuapp.com/api.php?fbid='
+    'api_url': 'https://predator-alert-tool.herokuapp.com/api.php?fbid='
 };
 
 // Utility debugging function.
