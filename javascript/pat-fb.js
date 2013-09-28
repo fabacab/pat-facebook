@@ -13,7 +13,9 @@
           FB.ui(
             {
               method : 'feed',
-              link   : $(this).attr('data-url')
+              link   : $(this).attr('data-url'),
+              caption: $(this).attr('data-caption'),
+              description: $(this).attr('data-description')
             },
             function (response) {
               // If response is null the user canceled the dialog

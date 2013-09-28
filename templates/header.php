@@ -82,7 +82,7 @@
             <p>Help survivors by sharing <a href="<?php echo he($FBApp->getAppLink());?>" target="_top"><?php echo he($FBApp->getAppName()); ?></a> with friends:</p>
             <ul>
                 <li>
-                    <a href="#" class="facebook-button" id="postToWall" data-url="<?php echo AppInfo::getUrl(); ?>">
+                    <a href="#" class="facebook-button" id="postToWall" data-url="<?php echo AppInfo::getUrl(); ?>" data-caption="<?php print he($FBApp->getAppName());?>" data-description="Made by survivors for survivors, <?php print he($FBApp->getAppName());?> helps survivors of sexual violence connect with other survivors in their social networks and start conversations about consent with friends.">
                         <span class="plus">Post to Wall</span>
                     </a>
                 </li>
