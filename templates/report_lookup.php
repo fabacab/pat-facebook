@@ -157,7 +157,7 @@ if (isset($_GET['who'])) {
         <blockquote><p><?php print nl2br(he($report->report_text));?></p></blockquote>
     </article>
     <?php if ($requester) : ?>
-    <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know who submitted this statement. If you feel comfortable identifying yourself to them, <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>" target="_top">click here to send them a message</a>.</p>
+    <p><img alt="" src="https://graph.facebook.com/<?php print he($_GET['requester']);?>/picture" /><a href="https://www.facebook.com/profile.php?id=<?php print he($_GET['requester']);?>" target="_top"><?php print ($requester['name']) ? he($requester['name']) : "Facebook user $requester";?></a> would like to know who submitted this statement. If you feel comfortable identifying yourself to them, <a href="https://www.facebook.com/messages/<?php print he($_GET['requester']);?>" target="_top">click here to send them a message</a>.</p>
     <?php endif; ?>
     <?php } else if (($_REQUEST['submit'] || $_REQUEST['submit_clarification']) && empty($reportee_id)) { ?>
     <form id="pat-find-report-form" method="post" action="<?php print "{$_SERVER['PHP_SELF']}?action=lookup";?>">
