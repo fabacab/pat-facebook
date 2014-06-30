@@ -70,7 +70,7 @@ if (pg_num_rows($result)) {
             <p>Share your story related to a Facebook user's behavior.</p>
         </li>
         <li>
-            <a href="https://userscripts.org/scripts/show/177813" target="_blank" class="icon mobile-apps">Get alerts</a>
+            <a href="https://greasyfork.org/scripts/2908-predator-alert-tool-for-facebook-pat-facebook" target="_blank" class="icon mobile-apps">Get alerts</a>
             <p>Download the app to get alerts as you browse.</p>
         </li>
     </ul>

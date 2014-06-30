@@ -6,9 +6,9 @@
  */
 // ==UserScript==
 // @name           Predator Alert Tool for Facebook (PAT-Facebook)
-// @version        0.1.2
+// @version        0.1.3
 // @namespace      com.maybemaimed.facebook.predator-alert-tool
-// @updateURL      https://userscripts.org/scripts/source/177813.user.js
+// @updateURL      https://github.com/meitar/pat-facebook/raw/master/predator-alert-tool-for-facebook.user.js
 // @description    Alerts you of people who have allegedly violated other people's consent as you browse Facebook.
 // @include        https://www.facebook.com/*
 // @include        http://www.facebook.com/*
