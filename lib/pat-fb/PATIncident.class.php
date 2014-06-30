@@ -86,8 +86,8 @@ class PATIncident {
     }
 
     private function validateReportText () {
-        if (249 > strlen($this->report_text)) {
-            $this->validation_errors['report_text'] = array('Report text must be at least 250 characters.');
+        if (empty($this->report_text)) {
+            $this->validation_errors['report_text'] = array('Report text must not be empty.');
             return false;
         }
         return true;
