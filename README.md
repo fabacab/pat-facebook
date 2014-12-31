@@ -1,4 +1,4 @@
-The Predator Alert Tool for Facebook is designed for survivors of sexual assault and rape. It allows you to share information about people in your social network who may be dangerous without having to reveal your identity.
+The [Predator Alert Tool for Facebook](https://apps.facebook.com/predator-alert-tool/) is designed for survivors of sexual assault and rape. It allows you to share information about people in your social network who may be dangerous without having to reveal your identity.
 
 Using Predator Alert Tool for Facebook, you can:
 
@@ -8,6 +8,8 @@ Using Predator Alert Tool for Facebook, you can:
 * **Hear about it.** Find out about others' bad experiences with people you know.
 
 # Overview
+
+The canonical instance available for public use as a proof of concept is available at [apps.facebook.com/predator-alert-tool](https://apps.facebook.com/predator-alert-tool/)
 
 This software is a social justice technology project designed to graft anti-rape culture features directly onto the way Facebook.com works. It is free and open source software unencumbered by patent, copyright, or other legal claims of ownership. (See the accompanying `LICENSE` file for legalese.)
 
