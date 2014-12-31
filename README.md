@@ -2,10 +2,10 @@ The [Predator Alert Tool for Facebook](https://apps.facebook.com/predator-alert-
 
 Using Predator Alert Tool for Facebook, you can:
 
-* **Talk about it.** Contribute your story with as much or as little detail as you feel comfortable sharing.
-* **Decide who knows.** Control who gets to see your story and who doesn't. Display your identity only to the people you choose.
-* **Get support.** Connect with friends who have had a bad experience with the same person you did.
-* **Hear about it.** Find out about others' bad experiences with people you know.
+* **[Talk about it](https://github.com/meitar/pat-facebook/wiki/User-Manual:Talk-About-It).** Contribute your story with as much or as little detail as you feel comfortable sharing.
+* **[Decide who knows](https://github.com/meitar/pat-facebook/wiki/User-Manual:Decide-Who-Knows).** Control who gets to see your story and who doesn't. Display your identity only to the people you choose.
+* **[Get support](https://github.com/meitar/pat-facebook/wiki/User-Manual:Get-Support).** Connect with friends who have had a bad experience with the same person you did.
+* **[Hear about it](https://github.com/meitar/pat-facebook/wiki/User-Manual:Hear-About-It).** Find out about others' bad experiences with people you know.
 
 # Overview
 
