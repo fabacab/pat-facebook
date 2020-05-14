@@ -28,7 +28,7 @@ require 'pat-fb/template_functions.inc.php';
 $FB = new Facebook(array(
   'appId'  => AppInfo::appID(),
   'secret' => AppInfo::appSecret(),
-//  'sharedSession' => true, // Was this causing a bug? https://github.com/meitar/pat-facebook/issues/3
+//  'sharedSession' => true, // Was this causing a bug? https://github.com/fabacab/pat-facebook/issues/3
   'trustForwarded' => true,
 ));
 $user_id = $FB->getUser();
@@ -58,4 +58,4 @@ $db = new PATFacebookDatabase();
 $db->connect(psqlConnectionStringFromDatabaseUrl());
 
 // Links to "help" screens.
-define('DOCUMENTATION_URL_BASE', 'https://github.com/meitar/pat-facebook/wiki');
+define('DOCUMENTATION_URL_BASE', 'https://github.com/fabacab/pat-facebook/wiki');

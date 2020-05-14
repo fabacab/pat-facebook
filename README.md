@@ -2,10 +2,10 @@ The [Predator Alert Tool for Facebook](https://apps.facebook.com/predator-alert-
 
 Using Predator Alert Tool for Facebook, you can:
 
-* **[Talk about it](https://github.com/meitar/pat-facebook/wiki/User-Manual:Talk-About-It).** Contribute your story with as much or as little detail as you feel comfortable sharing.
-* **[Decide who knows](https://github.com/meitar/pat-facebook/wiki/User-Manual:Decide-Who-Knows).** Control who gets to see your story and who doesn't. Display your identity only to the people you choose.
-* **[Get support](https://github.com/meitar/pat-facebook/wiki/User-Manual:Get-Support).** Connect with friends who have had a bad experience with the same person you did.
-* **[Hear about it](https://github.com/meitar/pat-facebook/wiki/User-Manual:Hear-About-It).** Find out about others' bad experiences with people you know.
+* **[Talk about it](https://github.com/fabacab/pat-facebook/wiki/User-Manual:Talk-About-It).** Contribute your story with as much or as little detail as you feel comfortable sharing.
+* **[Decide who knows](https://github.com/fabacab/pat-facebook/wiki/User-Manual:Decide-Who-Knows).** Control who gets to see your story and who doesn't. Display your identity only to the people you choose.
+* **[Get support](https://github.com/fabacab/pat-facebook/wiki/User-Manual:Get-Support).** Connect with friends who have had a bad experience with the same person you did.
+* **[Hear about it](https://github.com/fabacab/pat-facebook/wiki/User-Manual:Hear-About-It).** Find out about others' bad experiences with people you know.
 
 # Overview
 
@@ -21,7 +21,7 @@ Both of these pieces work independently. You can use the Predator Alert Tool for
 
 # User manual and documentation
 
-Inside the `docs/` directory, you'll find both user and developer documentation. The same information is also available on [the Predator Alert Tool for Facebook project's wiki on GitHub](https://github.com/meitar/pat-facebook/wiki). That's also where you'll find answers to frequently asked questions.
+Inside the `docs/` directory, you'll find both user and developer documentation. The same information is also available on [the Predator Alert Tool for Facebook project's wiki on GitHub](https://github.com/fabacab/pat-facebook/wiki). That's also where you'll find answers to frequently asked questions.
 
 # Reporting bugs and other issues
 
@@ -29,9 +29,9 @@ If you find a problem with this software, which can be defined as anything from 
 
 The way you do this is:
 
-1. Go to https://github.com/meitar/pat-facebook/issues and skim the open issues to see if one describing your issue has already been reported. If it has not already been reported, continue to the next step. If it has been, just leave a comment letting us know you ran into the issue as well.
+1. Go to https://github.com/fabacab/pat-facebook/issues and skim the open issues to see if one describing your issue has already been reported. If it has not already been reported, continue to the next step. If it has been, just leave a comment letting us know you ran into the issue as well.
 2. Read "[How to write a good bug report](http://noverse.com/blog/2012/06/how-to-write-a-good-bug-report/)" if you haven't already done so.
-3. Copy the template that the above post provides into the form at https://github.com/meitar/pat-facebook/issues/new (You will need to [sign up for a free GitHub.com account](https://github.com/signup/free) if you don't already have one.)
+3. Copy the template that the above post provides into the form at https://github.com/fabacab/pat-facebook/issues/new (You will need to [sign up for a free GitHub.com account](https://github.com/signup/free) if you don't already have one.)
 4. Fill in the template you copied, and submit the form.
 
 # Supporting this project
@@ -40,6 +40,6 @@ This project is 100% volunteer-run. There are no paid developers. There is no st
 
 There is also no budget.
 
-It takes time, heart, and material resources to ensure that this software continues to function, much less is improved on over time. If you can afford to do so, please consider making a donation in the form of food or money to [its houseless, nomadic developer](https://github.com/meitar/) at [Cyberbusking.org](http://Cyberbusking.org). Thank you very much.
+It takes time, heart, and material resources to ensure that this software continues to function, much less is improved on over time. If you can afford to do so, please consider making a donation in the form of food or money to [its houseless, nomadic developer](https://github.com/fabacab/) at [Cyberbusking.org](http://Cyberbusking.org). Thank you very much.
 
-Read more about [how to help](https://github.com/meitar/pat-facebook/wiki/How-to-help) on our wiki.
+Read more about [how to help](https://github.com/fabacab/pat-facebook/wiki/How-to-help) on our wiki.
